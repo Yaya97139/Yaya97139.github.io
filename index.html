@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yannis MONDUC — Ingénieur Systèmes Embarqués & Télécommunications</title>
+  <meta name="description" content="Portfolio de Yannis MONDUC, ingénieur spécialisé en systèmes embarqués, FPGA, et télécommunications. INSA Hauts-de-France. Stage ITA Brésil." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">YM<span class="dot">.</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">À Propos</a></li>
+        <li><a href="#skills">Compétences</a></li>
+        <li><a href="#projects">Projets</a></li>
+        <li><a href="#experience">Expérience</a></li>
+        <li><a href="#education">Formation</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-bg">
+      <canvas id="particles-canvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <p class="hero-greeting">Bonjour, je suis</p>
+      <h1 class="hero-name">Yannis <span class="accent">MONDUC</span></h1>
+      <div class="hero-typewriter">
+        <span id="typewriter-text"></span><span class="cursor">|</span>
+      </div>
+      <p class="hero-tagline">
+        Ingénieur spécialisé en <strong>Systèmes Embarqués</strong> et <strong>Télécommunications</strong> — 
+        INSA Hauts-de-France · Stage de recherche à l'<strong>ITA, Brésil</strong>
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+        <a href="CV_Yannis_MONDUC.pdf" class="btn btn-outline" download>
+          <i class="fas fa-download"></i> Télécharger mon CV
+        </a>
+      </div>
+      <div class="hero-socials">
+        <a href="https://www.linkedin.com/in/yannis-monduc" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://github.com/Yaya97139" target="_blank" rel="noopener" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:monducyannis97@gmail.com" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Défiler</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ ABOUT ══════════════════════════════════ -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">À <span class="accent">Propos</span></h2>
+      <div class="about-grid">
+        <div class="about-photo">
+          <div class="photo-frame">
+            <div class="photo-placeholder">
+              <i class="fas fa-user"></i>
+              <span>Photo</span>
+            </div>
+          </div>
+          <div class="about-badges">
+            <span class="badge"><i class="fas fa-map-marker-alt"></i> Valenciennes, France</span>
+            <span class="badge"><i class="fas fa-flag"></i> Nationalité française</span>
+            <span class="badge"><i class="fas fa-birthday-cake"></i> 22 ans</span>
+            <span class="badge available"><i class="fas fa-circle"></i> Disponible — Mars 2026</span>
+          </div>
+        </div>
+        <div class="about-text">
+          <p>
+            Ingénieur diplômé de l'<strong>INSA Hauts-de-France</strong> en Systèmes Embarqués, Électronique 
+            et Télécommunications, je suis passionné par la conception de systèmes qui se situent à 
+            l'intersection du <strong>matériel et du logiciel</strong> : FPGA, microcontrôleurs, 
+            protocoles de communication et traitement du signal.
+          </p>
+          <p>
+            Actuellement en <strong>stage de fin d'études à l'ITA (Instituto Tecnológico de Aeronáutica)</strong> 
+            au Brésil, je travaille sur des solutions FPGA pour systèmes embarqués et la mise en œuvre 
+            de chaînes de communication numérique avancées — une expérience internationale au sein 
+            d'un laboratoire de recherche de renommée mondiale.
+          </p>
+          <p>
+            Mon parcours mêle projets concrets (localisation indoor UWB, antenne patch, interfaces temps réel) 
+            et expériences professionnelles variées dans l'aéronautique, la mobilité et la recherche agronomique.
+            Je recherche des postes dans les domaines de l'<strong>aéronautique, du spatial, 
+            des systèmes embarqués ou des télécommunications</strong>.
+          </p>
+          <div class="about-langs">
+            <div class="lang-item">
+              <span class="lang-name">Français</span>
+              <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+              <span class="lang-level">C2 — Natif</span>
+            </div>
+            <div class="lang-item">
+              <span class="lang-name">Anglais</span>
+              <div class="lang-bar"><div class="lang-fill" style="width:85%"></div></div>
+              <span class="lang-level">C1</span>
+            </div>
+            <div class="lang-item">
+              <span class="lang-name">Espagnol</span>
+              <div class="lang-bar"><div class="lang-fill" style="width:65%"></div></div>
+              <span class="lang-level">B2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ SKILLS ════════════════════════════════ -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">Compétences <span class="accent">Techniques</span></h2>
+      <div class="skills-grid">
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-microchip"></i></div>
+          <h3>Systèmes Embarqués</h3>
+          <div class="skill-tags">
+            <span>FPGA</span><span>VHDL</span><span>Arduino</span><span>ESP32</span>
+            <span>STM32</span><span>Raspberry Pi</span><span>Microcontrôleurs</span>
+            <span>RTOS</span><span>Bare-metal</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-broadcast-tower"></i></div>
+          <h3>Télécommunications</h3>
+          <div class="skill-tags">
+            <span>TDOA / RSSI</span><span>UWB</span><span>Modulation Numérique</span>
+            <span>OFDM</span><span>WiFi / BLE</span><span>Réseaux Sans Fil</span>
+            <span>Antenne Patch</span><span>RF Design</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-code"></i></div>
+          <h3>Programmation</h3>
+          <div class="skill-tags">
+            <span>C / C++</span><span>Python</span><span>VHDL</span><span>MATLAB</span>
+            <span>HTML / CSS</span><span>JavaScript</span><span>SQL</span><span>Git</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-tools"></i></div>
+          <h3>Outils & Logiciels</h3>
+          <div class="skill-tags">
+            <span>Intel Quartus</span><span>Multisim</span><span>AIGLE</span>
+            <span>NumPy / SciPy</span><span>Matplotlib</span><span>Tkinter</span>
+            <span>WebSocket / Tornado</span><span>Suite Office</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-project-diagram"></i></div>
+          <h3>Architecture Système</h3>
+          <div class="skill-tags">
+            <span>IoT</span><span>Connected Objects</span><span>CCO</span>
+            <span>Traitement du Signal</span><span>Fusion de Capteurs</span>
+            <span>Moindres Carrés</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-cat-icon"><i class="fas fa-users"></i></div>
+          <h3>Soft Skills</h3>
+          <div class="skill-tags">
+            <span>Sérieux</span><span>Rigoureux</span><span>Curieux</span>
+            <span>Réactif</span><span>Autonome</span><span>Méthodique</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ PROJECTS ═══════════════════════════════ -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">Projets <span class="accent">Professionnels</span></h2>
+      <p class="section-subtitle">Réalisations concrètes alliant recherche, conception et développement</p>
+
+      <div class="projects-grid">
+
+        <!-- Project 1 — Stage ITA -->
+        <div class="project-card featured">
+          <div class="project-badge">Stage de Fin d'Études</div>
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-satellite"></i></div>
+            <div>
+              <h3>FPGA & Chaînes de Communication Numérique</h3>
+              <span class="project-org">ITA — Instituto Tecnológico de Aeronáutica · Brésil · 2025–2026</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Stage de recherche au sein d'un laboratoire de renommée mondiale, 
+            l'<strong>ITA (São José dos Campos, Brésil)</strong> — l'équivalent brésilien 
+            de l'École Polytechnique. Travaux sur la conception et l'implémentation de 
+            solutions <strong>FPGA pour systèmes embarqués</strong>, et étude approfondie 
+            des <strong>chaînes de communication numérique</strong> : modulation, codage, 
+            synchronisation et décodage temps réel sur cible matérielle.
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Recherche et développement de solutions FPGA</li>
+            <li><i class="fas fa-check-circle"></i> Étude des chaînes de communication numérique</li>
+            <li><i class="fas fa-check-circle"></i> Simulation et synthèse sur cible FPGA</li>
+            <li><i class="fas fa-check-circle"></i> Collaboration internationale en environnement de recherche</li>
+          </ul>
+          <div class="project-tags">
+            <span>FPGA</span><span>VHDL</span><span>Communication Numérique</span>
+            <span>Systèmes Embarqués</span><span>MATLAB</span><span>Intel Quartus</span>
+          </div>
+        </div>
+
+        <!-- Project 2 — Localisation UWB -->
+        <div class="project-card featured">
+          <div class="project-badge">Stage IEMN</div>
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <h3>Système de Localisation Indoor UWB</h3>
+              <span class="project-org">IEMN — Institut d'Électronique, de Microélectronique et de Nanotechnologie · 2026</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Conception complète d'un système de <strong>localisation en intérieur</strong> 
+            basé sur la technologie <strong>UWB (Ultra-Wideband)</strong> avec fusion de mesures 
+            complémentaires. Un tag émetteur ESP32 est localisé dans une pièce à partir 
+            de deux récepteurs fixes (ancres) en combinant :
+            <br>— <strong>RSSI</strong> (puissance du signal → cercle de distance)
+            <br>— <strong>TDOA</strong> (différence de temps d'arrivée → hyperbole)
+            <br>L'intersection cercle + hyperbole fournit la position estimée avec optimisation 
+            par <strong>algorithme des moindres carrés</strong> (Levenberg-Marquardt).
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Firmware Arduino sur ESP32 (tag UWB émetteur)</li>
+            <li><i class="fas fa-check-circle"></i> Fusion algorithmique TDOA + RSSI (SciPy Least Squares)</li>
+            <li><i class="fas fa-check-circle"></i> Interface graphique temps réel (Python / Tkinter / Matplotlib)</li>
+            <li><i class="fas fa-check-circle"></i> Serveur WiFi de collecte de données en temps réel</li>
+            <li><i class="fas fa-check-circle"></i> Rapport scientifique complet rédigé en LaTeX</li>
+          </ul>
+          <div class="project-tags">
+            <span>Python</span><span>ESP32</span><span>UWB</span><span>TDOA</span>
+            <span>RSSI</span><span>NumPy</span><span>SciPy</span><span>Tkinter</span>
+            <span>Arduino/C++</span><span>LaTeX</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/Yaya97139/uwb-indoor-localization" target="_blank" rel="noopener" class="link-btn">
+              <i class="fab fa-github"></i> Code Source
+            </a>
+            <a href="Systeme GPS/Rapport_stage/Rapport_latex.pdf" class="link-btn" target="_blank">
+              <i class="fas fa-file-pdf"></i> Rapport
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 3 — Camera Thermique -->
+        <div class="project-card">
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-thermometer-half"></i></div>
+            <div>
+              <h3>Caméra Thermique Embarquée</h3>
+              <span class="project-org">Projet Académique · INSA Hauts-de-France</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Développement d'un système de <strong>vision thermique embarquée</strong> intégrant 
+            un capteur infrarouge et un microcontrôleur. Le projet couvre l'acquisition des données 
+            thermiques, leur traitement numérique et l'affichage en temps réel d'une cartographie 
+            thermique de la scène observée. Application aux domaines de la maintenance industrielle, 
+            de la détection de présence et du contrôle qualité.
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Acquisition et traitement de données infrarouges</li>
+            <li><i class="fas fa-check-circle"></i> Cartographie thermique temps réel</li>
+            <li><i class="fas fa-check-circle"></i> Intégration sur cible embarquée (microcontrôleur)</li>
+          </ul>
+          <div class="project-tags">
+            <span>Systèmes Embarqués</span><span>Capteurs IR</span><span>C / C++</span>
+            <span>Traitement d'Image</span><span>IoT</span>
+          </div>
+        </div>
+
+        <!-- Project 4 — Interface HTML Embarquée -->
+        <div class="project-card">
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-desktop"></i></div>
+            <div>
+              <h3>Interface Web Temps Réel pour Systèmes Embarqués</h3>
+              <span class="project-org">Projet Professionnel · 2025–2026</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Développement d'une <strong>interface utilisateur web</strong> (HTML/CSS/JavaScript) 
+            pour des prototypes embarqués, avec un backend Python assurant la gestion des 
+            données matérielles. Communication <strong>bidirectionnelle temps réel</strong> 
+            via protocole <strong>WebSocket</strong> (serveur Tornado), permettant le monitoring 
+            et le contrôle d'un système embarqué depuis un navigateur sans latence perceptible.
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Interface web responsive (HTML / CSS / JS)</li>
+            <li><i class="fas fa-check-circle"></i> Communication temps réel WebSocket bidirectionnelle</li>
+            <li><i class="fas fa-check-circle"></i> Serveur Python Tornado assurant le backend embarqué</li>
+            <li><i class="fas fa-check-circle"></i> Visualisation de données capteurs en direct</li>
+          </ul>
+          <div class="project-tags">
+            <span>HTML / CSS</span><span>JavaScript</span><span>Python</span>
+            <span>WebSocket</span><span>Tornado</span><span>IoT</span>
+          </div>
+        </div>
+
+        <!-- Project 5 — Antenne Patch -->
+        <div class="project-card">
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-wifi"></i></div>
+            <div>
+              <h3>Conception & Fabrication d'une Antenne Patch</h3>
+              <span class="project-org">Projet Académique · INSA Hauts-de-France · 2024–2025</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Projet complet de <strong>conception et fabrication d'une antenne patch micro-ruban</strong>, 
+            de la spécification initiale à la fabrication physique. Utilisation du logiciel 
+            <strong>AIGLE</strong> pour la simulation et le dimensionnement. Réalisation de 
+            simulations électromagnétiques poussées : diagrammes de rayonnement 3D, 
+            mesures de paramètres S, analyse de l'adaptation d'impédance.
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Conception de la phase de concept à la fabrication physique</li>
+            <li><i class="fas fa-check-circle"></i> Simulations électromagnétiques (diagrammes de rayonnement)</li>
+            <li><i class="fas fa-check-circle"></i> Mesure et analyse des paramètres S (adaptation)</li>
+            <li><i class="fas fa-check-circle"></i> Validation expérimentale en chambre anéchoïque</li>
+          </ul>
+          <div class="project-tags">
+            <span>RF Design</span><span>AIGLE</span><span>Antenne Patch</span>
+            <span>Électromagnétisme</span><span>Paramètres S</span>
+          </div>
+        </div>
+
+        <!-- Project 6 — Finalisation Booster -->
+        <div class="project-card">
+          <div class="project-header">
+            <div class="project-icon"><i class="fas fa-rocket"></i></div>
+            <div>
+              <h3>Système Booster — Plateforme Embarquée</h3>
+              <span class="project-org">Projet Académique · INSA Hauts-de-France</span>
+            </div>
+          </div>
+          <p class="project-desc">
+            Conception et finalisation d'un <strong>système embarqué de type booster</strong>, 
+            comprenant l'architecture matérielle et logicielle d'une plateforme de contrôle 
+            temps réel. Le projet intègre la gestion d'actionneurs, la supervision de capteurs 
+            et la communication inter-modules, démontrant une maîtrise complète du cycle 
+            de développement système embarqué.
+          </p>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check-circle"></i> Architecture matérielle et logicielle temps réel</li>
+            <li><i class="fas fa-check-circle"></i> Gestion d'actionneurs et supervision capteurs</li>
+            <li><i class="fas fa-check-circle"></i> Communication inter-modules</li>
+          </ul>
+          <div class="project-tags">
+            <span>Systèmes Embarqués</span><span>C / C++</span><span>Temps Réel</span>
+            <span>Microcontrôleurs</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ EXPERIENCE ═════════════════════════════ -->
+  <section id="experience">
+    <div class="container">
+      <h2 class="section-title">Expériences <span class="accent">Professionnelles</span></h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3>Stage de Fin d'Études — Chercheur en Systèmes Embarqués</h3>
+              <span class="timeline-date">2025 — 2026</span>
+            </div>
+            <span class="timeline-org">
+              <i class="fas fa-building"></i> ITA — Instituto Tecnológico de Aeronáutica · São José dos Campos, Brésil
+            </span>
+            <ul class="timeline-tasks">
+              <li>Recherche et développement de solutions FPGA pour systèmes embarqués</li>
+              <li>Étude et mise en œuvre de chaînes de communication numérique (modulation, codage, décodage)</li>
+              <li>Expérience internationale dans un laboratoire de recherche de renommée mondiale</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>FPGA</span><span>VHDL</span><span>Communication Numérique</span><span>Recherche</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3>Technicien Support & Supervision</h3>
+              <span class="timeline-date">Sept. 2023 — Jan. 2024</span>
+            </div>
+            <span class="timeline-org">
+              <i class="fas fa-plane"></i> Aéroport Pôle Caraïbes · Guadeloupe
+            </span>
+            <ul class="timeline-tasks">
+              <li>Supervision et exploitation d'un système de contrôle automatisé de parking (caméras)</li>
+              <li>Gestion d'incidents techniques en temps réel dans un environnement aéroportuaire critique</li>
+              <li>Suivi de la densité de trafic et interventions terrain via systèmes connectés (IoT)</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>IoT</span><span>Systèmes Connectés</span><span>Supervision</span><span>Temps Réel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3>Stagiaire Ingénieur</h3>
+              <span class="timeline-date">Sept. 2023 — Jan. 2024</span>
+            </div>
+            <span class="timeline-org">
+              <i class="fas fa-bicycle"></i> Fixwheel (Micromobilité)
+            </span>
+            <ul class="timeline-tasks">
+              <li>Optimisation des processus de réparation des dispositifs de micromobilité</li>
+              <li>Amélioration des flux de contrôle qualité</li>
+              <li>Participation à la planification de projet et coordination technique</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>Gestion de Projet</span><span>Qualité</span><span>Coordination Technique</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3>Membre Business Unit</h3>
+              <span class="timeline-date">Fév. 2024</span>
+            </div>
+            <span class="timeline-org">
+              <i class="fas fa-lightbulb"></i> JINNOV — Junior-Entreprise INSA
+            </span>
+            <ul class="timeline-tasks">
+              <li>Gestion d'un portefeuille de services internes</li>
+              <li>Alignement produit-service avec les objectifs commerciaux</li>
+              <li>Collaboration avec une équipe pluridisciplinaire</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>Junior-Entreprise</span><span>Business</span><span>Travail d'Équipe</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3>Intern — Données Météorologiques</h3>
+              <span class="timeline-date">2018</span>
+            </div>
+            <span class="timeline-org">
+              <i class="fas fa-leaf"></i> INRAE (Institut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement)
+            </span>
+            <ul class="timeline-tasks">
+              <li>Déploiement d'une station de collecte de données météorologiques</li>
+              <li>Contribution à l'automatisation de tâches agricoles</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>Capteurs</span><span>Collecte de Données</span><span>Agriculture</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ EDUCATION ══════════════════════════════ -->
+  <section id="education">
+    <div class="container">
+      <h2 class="section-title"><span class="accent">Formation</span></h2>
+      <div class="edu-grid">
+
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fas fa-university"></i></div>
+          <div class="edu-content">
+            <h3>Diplôme d'Ingénieur</h3>
+            <h4>Systèmes Embarqués & Télécommunications</h4>
+            <span class="edu-school">INSA Hauts-de-France</span>
+            <span class="edu-date">2023 — 2025</span>
+            <ul class="edu-highlights">
+              <li>Architecture des systèmes embarqués, réseaux sans fil</li>
+              <li>Modulation numérique, IoT, traitement du signal</li>
+              <li>FPGA, microcontrôleurs (Arduino, STM32), Raspberry Pi</li>
+              <li>CCO — Conception et Coût Objets</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="edu-content">
+            <h3>Baccalauréat Scientifique</h3>
+            <h4>Spécialisation Mathématiques & Physique-Chimie</h4>
+            <span class="edu-school">Lycée Baimbridge · Les Abymes, Guadeloupe</span>
+            <span class="edu-date">2019 — 2021</span>
+            <ul class="edu-highlights">
+              <li>Obtenu avec mention</li>
+              <li>Spécialisation Mathématiques et Physique-Chimie</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ CONTACT ════════════════════════════════ -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title"><span class="accent">Contact</span></h2>
+      <p class="section-subtitle">Disponible à partir du 9 mars 2026 — Ouvert aux opportunités en aéronautique, spatial, systèmes embarqués et télécommunications</p>
+
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <span class="contact-label">Email</span>
+              <a href="mailto:monducyannis97@gmail.com" class="contact-value">monducyannis97@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <span class="contact-label">Téléphone</span>
+              <a href="tel:+33698548252" class="contact-value">+33 6 98 54 82 52</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <span class="contact-label">Localisation</span>
+              <span class="contact-value">Valenciennes, France (59300)</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+            <div>
+              <span class="contact-label">LinkedIn</span>
+              <a href="https://www.linkedin.com/in/yannis-monduc" target="_blank" rel="noopener" class="contact-value">linkedin.com/in/yannis-monduc</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-github"></i></div>
+            <div>
+              <span class="contact-label">GitHub</span>
+              <a href="https://github.com/Yaya97139" target="_blank" rel="noopener" class="contact-value">github.com/Yaya97139</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-id-card"></i></div>
+            <div>
+              <span class="contact-label">Permis</span>
+              <span class="contact-value">Permis B</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-qr">
+          <div class="qr-card">
+            <p class="qr-title"><i class="fas fa-qrcode"></i> Scanner pour accéder au portfolio</p>
+            <div id="qrcode"></div>
+            <p class="qr-url">https://yaya97139.github.io</p>
+            <p class="qr-hint">Intégrez ce QR Code sur votre CV pour que les recruteurs accèdent directement à cette page.</p>
+          </div>
+          <a href="CV_Yannis_MONDUC.pdf" download class="btn btn-primary btn-block">
+            <i class="fas fa-download"></i> Télécharger mon CV
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ FOOTER ════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <span class="footer-logo">YM<span class="dot">.</span></span>
+        <p>© 2026 Yannis MONDUC — Ingénieur Systèmes Embarqués & Télécommunications</p>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/yannis-monduc" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/Yaya97139" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="mailto:monducyannis97@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
