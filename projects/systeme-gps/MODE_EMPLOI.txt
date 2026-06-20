@@ -1,0 +1,146 @@
+
+MODE D'EMPLOI 
+
+PRINCIPE : 
+
+Le système localise un émetteur UWB (tag ESP32) dans une pièce à partir de
+2 récepteurs fixes (ancres). Il fusionne deux types de mesures :
+  - RSSI  → puissance du signal reçu → donne un CERCLE de distance
+  - TDOA  → différence de temps d'arrivée → donne une HYPERBOLE
+L'intersection cercle + hyperbole = position estimée de l'émetteur.
+
+
+ORGANISATION DES DOSSIERS
+
+d:\ Stage  IEMN\
+│
+├── Plateforme\                    OUTIL DE SIMULATION (interface graphique)
+│   ├── plateforme_gui.py            → application principale à lancer
+│   ├── plateforme_localisation.py   → moteur de calcul (fusion TDOA+RSSI)
+│   ├── Lancer_Plateforme.bat        → POINT D'ENTRÉE (double-cliquer ici)
+│   ├── MODE_EMPLOI_PLATEFORME.txt   → ce fichier
+│   └── Document_Bibliographique_Stage_TDOA_RSSI.txt  → doc technique complète
+│
+├── Dispositif_recuperation_de_donnees\   COLLECTE DE MESURES RÉELLES (ESP32)
+│   └── serveur_wifi_excel.py        → serveur TCP qui reçoit et enregistre
+│                                      les mesures de l'ESP32 en temps réel
+│
+├── esp32_uwb_tag.ino              Code Arduino du tag (émetteur UWB)
+├── donnees_mesures.xlsx           Fichier Excel généré par le serveur
+│
+├── tof\                           Photos des expériences
+├── Documentations\                Articles et thèses de référence (PDFs)
+└── .venv\                         Environnement Python (ne pas toucher)
+
+
+LANCEMENT
+
+
+  Double-cliquer sur :  Plateforme\Lancer_Plateforme.bat
+
+  Un menu s'affiche :
+    [1]  Plateforme de simulation  (interface graphique TDOA + RSSI)
+    [2]  Serveur WiFi              (collecte de données ESP32 en direct)
+    [Q]  Quitter
+
+Après avoir sélectionner le mode, attendre 2-5 minutes le temps que la plateforme puisse bien se lancer. 
+
+----------------------------------------------------------------
+MODE 1 SIMULATION (touche 1)
+---------------------------------------------------------------
+  
+Une fenêtre s'ouvre avec :
+    - À GAUCHE  : les paramètres à renseigner
+    - À DROITE  : le graphique 2D mis à jour en temps réel
+
+  Paramètres à saisir :
+    R1 / R2         → coordonnées (x, y) des deux récepteurs en mètres
+    RSSI 1 / RSSI 2 → puissances reçues en dBm (valeurs négatives, ex: -58.3)
+    TDOA (ns)       → différence de temps d'arrivée en nanosecondes (ex: -8.08)
+    P₀ / n          → calibration du modèle de propagation (P₀ à 1 m, n = 2.0
+                       à 4.0 selon l'environnement ; défaut : -40 dBm / 2.5)
+    Vraie position  → optionnel, pour afficher l'erreur de localisation
+
+  Appuyer sur [Entrée] ou cliquer sur "CALCULER & VISUALISER".
+
+  Le graphique affiche les cercles RSSI (vert/bleu), l'hyperbole TDOA (rouge)
+  et la position estimée (point orange). Le résidu TDOA indique la qualité.
+
+----------------------------------------------------------------
+MODE 2 SERVEUR WIFI / COLLECTE RÉELLE (touche 2)
+----------------------------------------------------------------
+  
+Prérequis :
+    - ESP32 programmé avec esp32_uwb_tag.ino
+    - ESP32 et PC sur le même réseau WiFi
+    - Adresse IP du PC renseignée dans le code Arduino (port 8080)
+
+  Le serveur attend la connexion TCP de l'ESP32 et affiche les mesures :
+    [Canal N — XXXX MHz]
+      Capteur XXXX  |  ToF: XXXXX ps  |  Distance: X.XXX m
+    Position: (X.XX m, X.XX m) | Distance radiale: XXXX mm
+   
+  Les données sont sauvegardées automatiquement toutes les 10 s dans
+  donnees_mesures.xlsx (3 feuilles : mesures brutes, positions par canal,
+  positions moyennes).
+
+  Arrêt propre : Ctrl+C  (déclenche une dernière sauvegarde Excel)
+  Attention    : ne pas ouvrir donnees_mesures.xlsx pendant que le serveur tourne.
+
+
+POINTS IMPORTANTS
+
+  - La position estimée finale doit être > à la plus petite distance mesurée
+    par les capteurs. Si ce n'est pas le cas → alerte [ALERTE], mesure à rejeter.
+
+  - Plus l'émetteur est loin, plus le canal UWB est stable et fiable.
+
+  - En environnement industriel (robots, moteurs), augmenter n (3.0–3.5) et
+    moyenner davantage de mesures pour compenser les perturbations EM.
+
+
+EN CAS DE PROBLÈME et CONSEILS PRATIQUES
+
+  LANCEMENT
+
+  · Le .bat ne s'ouvre pas ou se ferme immédiatement
+      → Vérifier que le dossier .venv\ est bien présent à la racine D:\ Stage IEMN\
+      → Ouvrir un terminal et lancer manuellement :
+          "d:\ Stage  IEMN\.venv\Scripts\python.exe" "d:\ Stage  IEMN\Plateforme\plateforme_gui.py"
+        pour voir le message d'erreur exact.
+
+  INTERFACE GRAPHIQUE (Mode 1)
+
+  · La fenêtre ne s'affiche pas ou plante au démarrage
+      → Vérifier que matplotlib et tkinter sont bien installés dans .venv\
+          pip install matplotlib
+  · Le graphique ne se met pas à jour après modification des valeurs
+      → Appuyer sur [Entrée] dans un champ ou cliquer sur "CALCULER & VISUALISER"
+  · La position estimée est aberrante (très loin ou négatif)
+      → Vérifier que RSSI 1 et RSSI 2 sont bien négatifs (ex: -58.3, pas 58.3)
+      → Vérifier que P₀ correspond à la calibration réelle de l'antenne
+      → Vérifier que les coordonnées R1/R2 sont cohérentes (en mètres)
+      → Si les cercles RSSI ne se croisent pas, augmenter légèrement n ou ajuster P₀
+
+  SERVEUR WIFI (Mode 2)
+
+  · "Connection refused" ou aucune donnée reçue
+      → Vérifier que l'adresse IP dans esp32_uwb_tag.ino correspond bien à celle du PC
+          (commande : ipconfig dans un terminal Windows → IPv4)
+      → Vérifier que l'ESP32 et le PC sont sur le même réseau WiFi
+      → Désactiver temporairement le pare-feu Windows pour le port 8080
+  · Le fichier donnees_mesures.xlsx n'est pas mis à jour
+      → Ne pas laisser le fichier ouvert dans Excel pendant que le serveur tourne
+      → Fermer Excel, puis relancer le serveur
+
+  MESURES / POINTAGE
+
+  · Distances incohérentes entre capteurs
+      → Re-vérifier le pointage avec le laser : s'assurer que les capteurs sont
+         bien alignés sur l'axe X (bande de scotch bleu) et les marqueurs à 1 m
+      → Repositionner l'émetteur et recommencer 5 mesures pour moyenner
+  · Canal UWB qui change souvent
+      → Éloigner l'émetteur (> 1 m des capteurs) : le canal se stabilise avec la distance
+      → Éloigner les sources EM proches (moteurs, câbles d'alimentation)
+
+FIN DU MODE D'EMPLOI

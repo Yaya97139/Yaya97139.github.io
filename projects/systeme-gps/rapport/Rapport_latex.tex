@@ -1,0 +1,1453 @@
+\documentclass[12pt, a4paper]{article}
+
+% ─── Encodage & langue ────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% ─── Mise en page ─────────────────────────────────────────────────────────────
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% ─── Polices & typographie ────────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ─── Couleurs & boîtes ────────────────────────────────────────────────────────
+\usepackage[dvipsnames]{xcolor}
+\definecolor{iemnblue}{RGB}{0, 62, 126}
+\definecolor{iemnlightblue}{RGB}{210, 228, 248}
+\definecolor{iemnaccent}{RGB}{220, 50, 47}
+\definecolor{boxbg}{RGB}{245, 248, 252}
+\definecolor{grisnote}{RGB}{248, 248, 248}
+\definecolor{bordernote}{RGB}{180, 180, 180}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% ─── Maths & Graphiques ───────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{graphicx}
+\usepackage{grffile}          % gestion des espaces et parenthèses dans les noms de fichiers
+\usepackage{subcaption}       % environnement subfigure
+
+% ─── Tableaux ─────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+
+% ─── En-têtes & pieds de page ─────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{iemnblue}{\textbf{Stage IEMN — 2026}}}
+\fancyhead[R]{\small\textcolor{iemnblue}{Localisation TDOA/RSSI}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ─── Sections personnalisées ──────────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\section}
+  {\large\bfseries\color{iemnblue}}
+  {\thesection.}{0.7em}{}
+  [\vspace{-0.3em}\textcolor{iemnblue}{\rule{\linewidth}{0.6pt}}\vspace{0.2em}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{iemnblue!80!black}}
+  {\thesubsection}{0.7em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\itshape\color{iemnblue!60!black}}
+  {\thesubsubsection}{0.7em}{}
+
+% ─── Listes ───────────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.5em, itemsep=0.2em}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=0.2em}
+
+% ─── Liens ────────────────────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=iemnblue, citecolor=iemnblue,
+            urlcolor=iemnaccent, bookmarks=true]{hyperref}
+
+% ─── Table des matières ───────────────────────────────────────────────────────
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\bfseries\color{iemnblue}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{iemnblue}}
+
+% ─── Boîtes de citation ───────────────────────────────────────────────────────
+\newtcolorbox{citebox}{
+  enhanced, breakable,
+  colback=grisnote, colframe=bordernote,
+  arc=3pt, left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fontupper=\small\itshape
+}
+
+\newtcolorbox{keybox}{
+  enhanced, breakable,
+  colback=iemnlightblue, colframe=iemnblue,
+  arc=4pt, left=10pt, right=10pt, top=6pt, bottom=6pt,
+  title={\textbf{Équations clés}},
+  fonttitle=\small\bfseries\color{white},
+  coltitle=white, attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=iemnblue, arc=3pt}
+}
+
+\newtcolorbox{summarybox}[1]{
+  enhanced, breakable,
+  colback=iemnlightblue!40, colframe=iemnblue!70,
+  arc=4pt, left=10pt, right=10pt, top=6pt, bottom=6pt,
+  title={#1},
+  fonttitle=\small\bfseries,
+  coltitle=iemnblue
+}
+
+% ─── Métadonnées PDF ──────────────────────────────────────────────────────────
+\hypersetup{
+  pdftitle={Document Bibliographique — Localisation TDOA/RSSI — Stage IEMN 2026},
+  pdfauthor={Stagiaire IEMN},
+  pdfsubject={Localisation indoor par fusion de mesures TDOA et RSSI},
+  pdfkeywords={TDOA, RSSI, localisation indoor, UWB, fusion, WSN}
+}
+
+% ─── Commandes utilitaires ────────────────────────────────────────────────────
+\newcommand{\TDOA}{\textsc{tdoa}}
+\newcommand{\RSSI}{\textsc{rssi}}
+\newcommand{\UWB}{\textsc{uwb}}
+\newcommand{\LOS}{\textsc{los}}
+\newcommand{\NLOS}{\textsc{nlos}}
+\newcommand{\WSN}{\textsc{wsn}}
+\newcommand{\GPS}{\textsc{gps}}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% ─── Page de titre ────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \thispagestyle{empty}
+
+  % Bande de couleur haute
+  \noindent\colorbox{iemnblue}{%
+    \parbox{\textwidth}{%
+      \vspace{0.8cm}
+      \centering
+      \textcolor{white}{\Large\bfseries
+        Institut d'Électronique, de Micro-Électronique\\[4pt]
+        et de Nanotechnologie}\\[6pt]
+      \textcolor{white!70!iemnblue}{\normalsize IEMN —INSA — Université de Valenciennes}
+      \vspace{0.8cm}
+    }%
+  }
+
+  \vspace{2cm}
+
+  {\centering
+    \textcolor{iemnblue}{\rule{0.15\linewidth}{2pt}}
+    \hspace{0.5em}
+    \textcolor{iemnaccent}{\Large\bfseries Document Bibliographique de Stage}
+    \hspace{0.5em}
+    \textcolor{iemnblue}{\rule{0.15\linewidth}{2pt}}
+    \par
+  }
+
+  \vspace{1.2cm}
+
+  {\centering
+    \textcolor{iemnblue}{\Huge\bfseries
+      Localisation par fusion\\[8pt]
+      de mesures TDOA et RSSI}
+    \par
+  }
+
+  \vspace{0.8cm}
+
+  {\centering
+    \textcolor{gray}{\large\itshape
+      Étude bibliographique préparatoire au stage de recherche}
+    \par
+  }
+
+  \vspace{2cm}
+
+  \begin{center}
+  \begin{tcolorbox}[
+    width=0.82\textwidth,
+    colback=boxbg, colframe=iemnblue,
+    arc=6pt, left=14pt, right=14pt, top=10pt, bottom=10pt
+  ]
+    \centering
+    \begin{tabular}{rl}
+      \textbf{Auteur :}       & \textit{Yannis MONDUC}\\[4pt]
+      \textbf{Laboratoire :}  & IEMN, Université de Valenciennes\\[4pt]
+      \textbf{Encadrement :}  & Thomas Steve Nkolo Bekono\\
+                              
+      \textbf{Date :}         & Mars 2026
+    \end{tabular}
+  \end{tcolorbox}
+  \end{center}
+
+  \vspace{1.5cm}
+
+  
+\end{titlepage}
+
+% ─── Table des matières ───────────────────────────────────────────────────────
+\newpage
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+
+\section*{Objectif du stage }
+  
+L'objectif de ce stage est d'étudier une méthode de \textbf{localisation sans fil} basée sur la \textbf{fusion de deux types de mesures radio}. La première approche est le \textbf{TDOA} (\textit{Time Difference of Arrival}), qui permet d'estimer la position d'un émetteur à partir de différences de temps d'arrivée du signal entre plusieurs récepteurs. Géométriquement, cette contrainte temporelle définit des \textbf{hyperboles}. La seconde approche est le \textbf{RSSI} (\textit{Received Signal Strength Indicator}), qui permet d'estimer la distance entre l'émetteur et un récepteur à partir de la \textbf{puissance du signal reçu}, se traduisant visuellement par des \textbf{cercles} de probabilité.
+
+Durant cette période, le travail consistera dans un premier temps à comprendre et à formaliser mathématiquement les principes de base de ces deux méthodes de localisation, ainsi que la modélisation géométrique des hyperboles (TDOA) et des cercles (RSSI) associés aux signaux radio. Dans un second temps, il s'agira de développer une plateforme logicielle (en Python ou MATLAB) permettant de \textbf{fusionner ces informations} disparates. L'étudiant pourra ainsi découvrir du point de vue théorique et pratique les bases de la \textbf{géolocalisation}, le traitement de l'incertitude et la \textbf{modélisation géométrique des mesures} pour améliorer l'estimation de position d'un émetteur en environnement intérieur.
+
+  
+\newpage
+
+\section{Introduction et contexte général}
+% ══════════════════════════════════════════════════════════════════════════════
+
+La géolocalisation en environnement intérieur (\textit{indoor}) est aujourd'hui un
+enjeu majeur dans de nombreux domaines~: services médicaux d'urgence, gestion
+d'actifs industriels, guidage en bâtiments publics (musées, hôpitaux, aéroports),
+sécurité des personnes, robotique, etc.
+
+Contrairement à l'environnement extérieur où le \GPS{} (\textit{Global Positioning
+System}) s'est imposé comme solution universelle avec une précision de quelques
+mètres, l'environnement \textit{indoor} pose des problèmes fondamentaux. L'atténuation
+sévère des signaux satellitaires par les structures du bâtiment oblige à se
+tourner vers des signaux internes. L'espace intérieur génère continuellement des
+réflexions sur les murs et les meubles, créant de multiples trajets pour l'onde (multi-trajet).
+Le canal radio varie dans le temps avec le déplacement des personnes ou l'ouverture
+des portes, et il n'y a souvent aucune visibilité directe (\NLOS{} — \textit{Non Line of Sight})
+entre l'émetteur et le récepteur.
+
+Ces contraintes imposent de recourir à des technologies de communication en champ
+proche (WiFi, Bluetooth, ZigBee, \UWB{}) et à des techniques de mesure et
+d'estimation spécifiquement adaptées à ce contexte. Parmi celles-ci, notre étude va se concentrer sur deux approches distinctes~:
+la mesure des différences de temps d'arrivée ou \textbf{\TDOA{}} (\textit{Time Difference of Arrival}) et la mesure de l'atténuation de la puissance radioélectrique \textbf{\RSSI{}} (\textit{Received Signal Strength Indicator}).
+
+L'objectif du stage est d'étudier comment \textbf{combiner (fusionner)} ces deux
+types de mesures afin d'améliorer l'estimation de la position d'un émetteur mobile
+par rapport à ce que chacune des techniques offre individuellement~\cite{Deak2012,
+Mitilineos2010, Xiao2016, Klingbeil2008}.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{La localisation \textit{indoor} — problématique et enjeux}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Classification des systèmes de localisation}
+
+Les systèmes de localisation \textit{indoor} se structurent en différentes catégories suivant plusieurs critères architecturaux et technologiques.
+
+Selon la participation de la cible, on distingue les \textbf{systèmes actifs}, où la personne ou l'objet à localiser porte un dispositif électronique (tag ou smartphone) qui émet sciemment des signaux pour permettre à un serveur ou au dispositif lui-même de calculer la position. À l'inverse, les \textbf{systèmes passifs} analysent l'environnement sans requérir d'équipement sur la cible, la présence de celle-ci étant déduite de l'impact qu'elle crée sur les ondes ambiantes (comme les variations du RSSI ou via l'analyse vidéo). Bien que plus discrets, ils sont généralement moins précis que les dispositifs actifs.
+
+\begin{citebox}
+\textbf{Source~\cite{Deak2012}~:} Deak et al.\ (2012) proposent une taxinomie
+complète de ces deux classes et comparent les systèmes existants selon les
+critères~: technologie radio utilisée, algorithme de positionnement, précision,
+scalabilité et coût.
+\end{citebox}
+
+La différenciation s'opère également selon la \textbf{nature intrinsèque du dispositif}. Dans une approche \textit{device-based}, l'appareil couplé à la cible participe activement aux calculs d'estimation et à la communication réseau, ce qui favorise la remontée de données. À l'opposé, l'approche \textit{device-free} s'affranchit du porteur et compte uniquement sur la réfraction physique du champ radio environnant.
+
+\begin{citebox}
+\textbf{Source~\cite{Xiao2016}~:} Xiao et al.\ (2016) proposent un état de l'art
+exhaustif selon cette distinction, avec une attention particulière sur les
+smartphones comme plateforme de fusion de capteurs hétérogènes.
+\end{citebox}
+
+Enfin, le critère technique fondamental est défini par la technique de mesure sous-jacente qui viendra dicter l'algorithme de calcul final. Qu'il s'agisse de mesurer la force du signal (\RSSI{}), le temps de trajet formel (TOA), le différentiel temporel d'arrivée (\TDOA{}), l'angle d'arrivée de l'onde (AOA) ou encore de faire de la reconnaissance d'empreinte radio par un système informatisé (\textit{Fingerprinting}), chaque modèle propose une réponse adaptée à une contrainte métier spécifique.
+
+\begin{citebox}
+\textbf{Source~\cite{Mitilineos2010}~:} Mitilineos et al.\ (2010) ont développé
+et comparé expérimentalement des plateformes \WSN{} utilisant chacune de ces techniques majeures dans le cadre du projet EU \textit{EMERGE} (services d'urgence médicale pour personnes âgées).
+\end{citebox}
+
+\subsection{Précisions et limitations typiques}
+
+\begin{table}[h!]
+  \centering
+  \caption{Comparaison des techniques de localisation \textit{indoor}}
+  \label{tab:precision}
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabularx}{\textwidth}{
+    >{\bfseries}l
+    >{\centering\arraybackslash}X
+    X
+  }
+    \toprule
+    \rowcolor{iemnblue}
+    \textcolor{white}{Technique} &
+    \textcolor{white}{Précision typique} &
+    \textcolor{white}{Principale limitation} \\
+    \midrule
+    GPS             & Non disponible    & Atténuation par les structures \\
+    \rowcolor{iemnlightblue!40}
+    RSSI            & 1 à 5~m           & Sensible aux variations du canal \\
+    TOA             & 0,1 à 1~m         & Synchronisation horloge requise \\
+    \rowcolor{iemnlightblue!40}
+    TDOA            & 0,1 à 1~m         & Synchronisation entre récepteurs \\
+    AOA             & 0,5 à 2~m         & Dégradé en environnement multipath \\
+    \rowcolor{iemnlightblue!40}
+    UWB + TDOA      & \textbf{1 à 10~cm} & Coût, bande passante réglementée \\
+    Fingerprinting  & 1 à 3~m           & Phase d'apprentissage longue \\
+    \bottomrule
+  \end{tabularx}
+  \medskip\\
+  \small Sources~\cite{Deak2012, Mitilineos2010, Evennou2007, Klingbeil2008}
+\end{table}
+
+\subsection{Le problème du multipath et du NLOS}
+
+L'environnement intérieur est riche en obstacles et surfaces réfléchissantes comme les murs métalliques, le verre ou le mobilier. Il en résulte que le signal reçu par le capteur n'est presque jamais uniquement le signal propagé en trajet direct (\LOS{} — \textit{Line of Sight}) mais plutôt une superposition chaotique de multiples répliques retardées de cette même onde, un phénomène appelé multi-trajets. 
+
+Ces phénomènes affectent directement la fiabilité des différentes méthodes. Du point de vue des analyses temporelles comme le \TDOA{}, le risque majeur est que le capteur valide un instant d'arrivée correspondant à un trajet indirect ou à un écho, car ce dernier peut parfois émerger plus fortement du bruit de fond que le trajet direct très atténué par un mur. Cela crée des retards artificiels faussant totalement la mesure du temps de vol. Pour la mesure de l'énergie comme le \RSSI{}, l'environnement crée des zones d'interférences constructives et destructives en fonction de la pièce. La puissance reçue présente alors une grande variabilité spatiale et temporelle même si l'émetteur ne change pas drastiquement de position.
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007} (Chapitre~1)~:} \og{}Dans une situation de
+non-visibilité directe (\NLOS{}), le trajet le plus fort au niveau des réponses
+impulsionnelles n'est pas le trajet le plus court. Il est nécessaire de mettre en
+place des algorithmes pour estimer cet instant d'arrivée du premier trajet afin
+de minimiser les erreurs sur l'estimation de la distance émetteur/récepteur.\fg{}
+\end{citebox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{La technique TDOA (\textit{Time Difference of Arrival})}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Principe fondamental}
+
+Le \TDOA{} (\textit{Time Difference of Arrival}, ou Différence de Temps d'Arrivée)
+est une technique de localisation basée sur la mesure de la \textbf{différence des
+temps d'arrivée} d'un signal provenant d'un émetteur inconnu auprès de plusieurs
+récepteurs dont les positions sont connues (les \og{}ancres\fg{} ou \og{}balises\fg{}).
+
+Contrairement au TOA (\textit{Time of Arrival}) qui nécessite une synchronisation
+parfaite entre l'émetteur et chaque récepteur, le \TDOA{} ne requiert qu'une
+synchronisation \textbf{entre les récepteurs eux-mêmes}, ce qui simplifie
+considérablement l'architecture du système.
+
+\begin{citebox}
+\textbf{Source~\cite{Kossonou2014} (p.~ii)~:} \og{}Nous avons choisi la technique
+temporelle de différenciation du temps d'arrivée (TDOA). Cette technique permet de
+mieux tirer profit de la bonne résolution temporelle de l'\UWB{} et de pallier au
+problème de synchronisation entre l'émetteur et le récepteur.\fg{}
+\end{citebox}
+
+\subsection{Modèle géométrique — équation de l'hyperbole}
+
+\noindent\textbf{Notations :}
+\begin{itemize}
+  \item $E = (x,\, y)$ : position inconnue de l'émetteur
+  \item $R_i = (x_i,\, y_i)$ : position connue du récepteur $i$ (balise)
+  \item $d_i$ : distance entre l'émetteur $E$ et le récepteur $R_i$
+  \item $c \approx 3\times10^8$~m/s : vitesse de propagation de l'onde radio
+\end{itemize}
+
+La distance émetteur–récepteur vaut~:
+\begin{equation}
+  d_i = \sqrt{(x - x_i)^2 + (y - y_i)^2}
+  \label{eq:dist}
+\end{equation}
+
+Si le signal part de $E$ à $t_0$ et arrive en $R_i$ à $t_i$, alors $d_i = c(t_i - t_0)$.
+La \textbf{mesure TDOA} entre les récepteurs $i$ et $j$ est~:
+\begin{equation}
+  \tau_{ij} = t_i - t_j = \frac{d_i - d_j}{c}
+  \label{eq:tdoa_time}
+\end{equation}
+
+La différence de distances correspondante est~:
+\begin{equation}
+  \delta_{ij} = d_i - d_j = c\,\tau_{ij}
+  \label{eq:tdoa_dist}
+\end{equation}
+
+L'ensemble des points $(x,y)$ vérifiant la contrainte~(\ref{eq:tdoa_dist}) définit
+une \textbf{hyperbole} dont les foyers sont $R_i$ et $R_j$~:
+
+\begin{keybox}
+\begin{equation}
+  \sqrt{(x - x_i)^2 + (y - y_i)^2} \;-\; \sqrt{(x - x_j)^2 + (y - y_j)^2} \;=\; \delta_{ij}
+  \label{eq:hyperbole}
+\end{equation}
+\end{keybox}
+
+\begin{summarybox}{Nombre de récepteurs nécessaires}
+\begin{itemize}
+  \item \textbf{2D}~: $\geq 3$ récepteurs $\Rightarrow$ 2 hyperboles indépendantes
+        $\Rightarrow$ 1 point d'intersection (position)
+  \item \textbf{3D}~: $\geq 4$ récepteurs $\Rightarrow$ 3 hyperboles indépendantes
+\end{itemize}
+\end{summarybox}
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007}~:} \og{}Les techniques de localisation associées
+sont généralement basées sur les techniques temporelles, à savoir TOA et TDOA.
+S'il est possible de déterminer précisément l'instant d'arrivée de ce premier trajet,
+l'application d'un algorithme de trilatération semblable à celui utilisé pour le GPS
+permettra d'estimer la position du mobile.\fg{}
+\end{citebox}
+
+\subsection{Résolution — estimation de la position}
+
+L'intersection des hyperboles est un problème \textbf{non-linéaire}. Plusieurs
+méthodes existent~:
+
+\begin{enumerate}[label=\alph*)]
+  \item \textbf{Méthode algébrique de Chan-Ho} (1994)~: linéarisation du système
+        hyperbolique par substitution, puis résolution par moindres carrés pondérés
+        (WLS). Atteint la borne de Cramér-Rao à haut SNR.
+
+  \item \textbf{Moindres carrés non-linéaires} (Taylor / Gauss-Newton)~:
+        linéarisation autour d'un point initial, puis itérations. Sensible à
+        l'initialisation (risque de minimum local).
+
+  \item \textbf{Méthode de Fang} (cas 2D, exactement 3 récepteurs)~:
+        solution analytique fermée.
+\end{enumerate}
+
+\begin{citebox}
+\textbf{Source~\cite{Kossonou2014}~:} \og{}Une étape importante de notre étude a
+été de développer un algorithme non-itératif de localisation en 3-D pour réduire
+le temps de calcul. En effet, l'utilisation d'un algorithme non-itératif permet
+d'optimiser les performances du système en termes de temps de calcul voire de
+coûts de consommation énergétique.\fg{}
+\end{citebox}
+
+\subsection{Limitations}
+
+Malgré une exactitude mathématique évidente en théorie, l'application du \TDOA{} sur le terrain implique de lourdes contraintes technologiques. La principale limite réside dans la nécessité absolue de synchroniser très précisément les horloges matérielles de tous les récepteurs du réseau. Sous l'égide de la vitesse de la lumière, une désynchronisation d'une simple nanoseconde entraîne un décalage spatial de près de $30\text{ cm}$.
+
+De plus, cette technique est particulièrement vulnérable aux phénomènes de trajet non direct ou \NLOS{}. Comme expliqué précédemment, si l'impulsion originelle est bloquée et que seule sa réflexion atteint le système, l'algorithme va enregistrer un faux retard qui éloignera irréversiblement l'hyperbole de la véritable position de l'émetteur. Enfin, les propriétés géométriques de la trilatération imposent l'installation d'au minimum 3~récepteurs parfaitement fonctionnels pour une couverture bidimensionnelle (2D) et 4~récepteurs pour le suivi tridimensionnel (3D).
+
+\begin{summarybox}{Points forts et points faibles du TDOA}
+\textbf{Points forts~:}\\
+La méthode offre une \textbf{très haute précision} sous réserve d'une bonne synchronisation temporelle (inférieure au centimètre si couplée à des modulations \UWB{}). Elle allège également l'architecture du réseau en évitant toute synchronisation complexe \textbf{entre l'émetteur cible et les différentes antennes} (la synchronisation concerne uniquement les antennes entre elles). La nature purement chronométrique du calcul affranchit l'équation mathématique des complexes modèles de propagation de l'énergie.
+
+\medskip
+\textbf{Points faibles~:}\\
+La solution reste cependant d'une fragilité extrême face aux réverbérations physiques, un signal réfléchi faussant toute la topologie. Les infrastructures nécessitent un matériel horloger drastique (1~ns d'erreur $\approx 30$~cm d'erreur spatiale) et demandent un déploiement spatial suffisamment étendu avec un minimum de 3 à 4~stations.
+\end{summarybox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{La technique RSSI (\textit{Received Signal Strength Indicator})}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Principe fondamental}
+
+Le \RSSI{} est une mesure de la \textbf{puissance du signal radio reçu}, exprimée
+généralement en dBm. Il est disponible nativement sur la quasi-totalité des chipsets
+radio (WiFi, ZigBee, BLE, etc.) \textbf{sans matériel supplémentaire}.
+
+L'idée fondamentale est que plus un émetteur est distant, plus le signal reçu est
+atténué. En calibrant le modèle de propagation, on convertit la puissance reçue en
+une estimation de distance.
+
+\begin{citebox}
+\textbf{Source~\cite{Xiao2016}~:} \og{}\textit{One of the simplest approaches that
+has been used for estimation of distances between nodes is receiver signal
+strength.}\fg{}
+\end{citebox}
+
+\subsection{Modèle de propagation — loi de \textit{path loss}}
+
+Le modèle log-distance du \textit{path loss} donne~:
+
+\begin{keybox}
+\begin{equation}
+  P_r(d) = P_0 - 10\,n\,\log_{10}\!\left(\frac{d}{d_0}\right) \qquad [\text{dBm}]
+  \label{eq:pathloss}
+\end{equation}
+\end{keybox}
+
+\noindent où~:
+\begin{itemize}
+  \item $P_r(d)$~: puissance reçue à la distance $d$ (en dBm)
+  \item $P_0$~: puissance reçue à la distance de référence $d_0$ (typiquement
+        $d_0 = 1$~m)
+  \item $n$~: exposant de \textit{path loss} ($n \approx 2$ en espace libre~;
+        $n \approx 2{,}5$ à $4$ en intérieur selon les obstacles)
+\end{itemize}
+
+En inversant l'équation~(\ref{eq:pathloss}), on obtient l'estimation de distance~:
+\begin{equation}
+  \hat{d} = d_0 \cdot 10^{\dfrac{P_0 - P_r}{10\,n}}
+  \label{eq:dist_rssi}
+\end{equation}
+
+L'ensemble des points situés à la distance $\hat{d}_i$ d'une balise $R_i = (x_i, y_i)$
+connue forme un \textbf{cercle}~:
+
+\begin{keybox}
+\begin{equation}
+  (x - x_i)^2 + (y - y_i)^2 = \hat{d}_i^{\,2}
+  \label{eq:cercle}
+\end{equation}
+\end{keybox}
+
+Avec au minimum 3~balises, l'intersection des cercles donne la position 2D par
+\textbf{trilatération}.
+
+\begin{citebox}
+\textbf{Source~\cite{Mitilineos2010}~:} \og{}\textit{RB [range-based] systems
+measure the distance between the MS and a number of Base Stations, and then the MS's
+position arises as the intersection point of the corresponding curves.}\fg{}
+\end{citebox}
+
+\subsection{Variabilité et limitations}
+
+Le \RSSI{} est une mesure intrinsèquement très bruitée car l'énergie est diluée par un grand nombre d'attributs physiques. Le profil radiométrique souffre en premier lieu d'une \textbf{variabilité spatiale} : le \textit{shadow fading} (effet de masque) et l'absorption génèrent des poches discrètes de signal très fort et très faible qui ne correspondent plus du tout au fluide modèle mathématique log-distance. S'ajoute à cela une \textbf{variabilité temporelle} dictée par le mouvement des agents d'ambiance et une \textbf{sensibilité géométrique} liée à la polarisation de l'antenne selon son orientation. Enfin, tout mur dressé entre l'émetteur et le récepteur (\NLOS{}) force une chute sévère de l'énergie causant un biais massif d'estimation de la distance qui ne sera plus corrigible sans un calibrage approfondi.
+
+En pratique, et en l'absence de correction particulaire, l'erreur finale sur la grandeur de distance se chiffre très rapidement de l'ordre de \textbf{1 à 5~m} en intérieur.
+
+\begin{citebox}
+\textbf{Source~\cite{Klingbeil2008}~:} \og{}\textit{An example of this type of
+approach is the RADAR system where signal strength from static nodes is used to
+roughly track mobile indoor nodes.}\fg{}
+\end{citebox}
+
+\subsection{Trilatération RSSI — résolution linéarisée}
+
+En 2D, avec $N \geq 3$ balises, le système des cercles est~:
+\[
+  (x - x_k)^2 + (y - y_k)^2 = \hat{d}_k^{\,2}, \quad k = 1, \ldots, N
+\]
+
+En soustrayant l'équation $k=1$ aux suivantes, on élimine les termes quadratiques
+en $x$ et $y$ et on obtient un système \textbf{linéaire}~$\mathbf{A}\mathbf{p} = \mathbf{b}$~:
+\[
+  \underbrace{
+  \begin{pmatrix}
+    2(x_2 - x_1) & 2(y_2 - y_1) \\
+    \vdots & \vdots \\
+    2(x_N - x_1) & 2(y_N - y_1)
+  \end{pmatrix}
+  }_{\mathbf{A}}
+  \begin{pmatrix} x \\ y \end{pmatrix}
+  =
+  \underbrace{
+  \begin{pmatrix}
+    \hat{d}_1^2 - \hat{d}_2^2 + x_2^2 - x_1^2 + y_2^2 - y_1^2 \\
+    \vdots \\
+    \hat{d}_1^2 - \hat{d}_N^2 + x_N^2 - x_1^2 + y_N^2 - y_1^2
+  \end{pmatrix}
+  }_{\mathbf{b}}
+\]
+
+La solution par moindres carrés est~:
+\begin{equation}
+  \hat{\mathbf{p}} = (\mathbf{A}^T \mathbf{A})^{-1} \mathbf{A}^T \mathbf{b}
+  \label{eq:moindres_carres}
+\end{equation}
+
+\begin{summarybox}{Points forts et points faibles du RSSI}
+\textbf{Points forts~:}\\
+Sa principale force réside dans sa disponibilité native sur l'immense majorité des puces et \textit{chipsets} radio du marché grand public (WiFi, BLE, ZigBee) ne demandant absolument \textbf{aucun ajout de matériel supplémentaire}. La simplicité d'extraction permet un fonctionnement totalement a-synchrone car l'horodatage des paquets ne préside plus la résolution mathématique. Le système s'insère ainsi d'une manière très fluide sur les infrastructures réseaux et domotiques \textit{indoor} déjà existantes.
+
+\medskip
+\textbf{Points faibles~:}\\
+Il s'agit par nature d'une métrique d'une \textbf{précision géométrique très limitée} (1 à 5~m en conditions standards) en proie à une extrême instabilité. Tout type d'obstacles et les moindres déplacements génèrent du \textit{shadowing} imprévisible faussant radicalement le calcul de \textit{path loss}. Ce dernier modèle doit d'ailleurs subir de longues et pénibles séries d'étalonnages expérimentaux pour tenter chaque fois de l'adapter au mieux aux propriétés radiométriques du bâtiment hébergeur.
+\end{summarybox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Fusion de mesures TDOA et RSSI}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Motivations de la fusion}
+
+\begin{table}[h!]
+  \centering
+  \caption{Analyse comparative~: TDOA seule, RSSI seule, fusion TDOA+RSSI}
+  \label{tab:comparaison}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{
+    >{\bfseries\centering\arraybackslash}p{2.8cm}
+    >{\centering\arraybackslash}X
+    >{\centering\arraybackslash}X
+  }
+    \toprule
+    \rowcolor{iemnblue}
+    \textcolor{white}{Approche} &
+    \textcolor{white}{Avantages} &
+    \textcolor{white}{Inconvénients} \\
+    \midrule
+    TDOA seule
+      & Précision élevée (cm avec \UWB{})
+      & Fragile en \NLOS{} ; infrastructure synchronisée ; ambiguïtés avec peu
+        de récepteurs \\
+    \rowcolor{iemnlightblue!40}
+    RSSI seule
+      & Disponible sur tout équipement standard ; faible coût
+      & Précision limitée (1–5~m) ; forte variabilité \\
+    \textbf{Fusion TDOA + RSSI}
+      & \textbf{Précision améliorée ; levée d'ambiguïté ; robustesse accrue en \NLOS{}}
+      & Complexité algorithmique accrue \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007} (p.~48)~:} \og{}Une combinaison de plusieurs
+solutions technologiques permettra de garantir une couverture du service de
+localisation plus importante que celle obtenue par chacune des technologies
+individuellement, avec une meilleure qualité sur l'estimation de la position du
+mobile. [\ldots] L'idée est de diminuer les imperfections d'un capteur en substituant
+la localisation retournée par ce capteur par celle provenant d'un autre capteur dont
+les performances sont meilleures à ce moment précis.\fg{}
+\end{citebox}
+
+\subsubsection{Résolution des ambiguïtés géométriques}
+
+En \TDOA{}, la localisation 2D requiert l'intersection d'au moins deux hyperboles
+(trois récepteurs). Selon la disposition des capteurs, ces hyperboles peuvent présenter
+\textbf{deux points d'intersection} très proches, voire être quasi-parallèles,
+générant ainsi des ambiguïtés que le seul \TDOA{} ne peut lever.
+
+Le \RSSI{} intervient ici comme \textbf{discriminateur géométrique}~: même si sa
+précision radiale est modeste (1 à 5~m), le cercle de confiance qu'il fournit
+permet d'éliminer immédiatement les \textit{fausses solutions} du \TDOA{} situées
+à une distance incompatible avec la puissance reçue. La fusion réalise ainsi une
+\textbf{levée d'ambiguïté robuste} à coût algorithmique réduit.
+
+\subsubsection{Compensation des faiblesses physiques}
+
+Le \TDOA{} et le \RSSI{} ne subissent pas les mêmes perturbations radio — leurs
+erreurs sont donc \textbf{décorrélées}~:
+
+\begin{itemize}
+  \item \textbf{Multi-trajets (\NLOS{}) et \TDOA{}}~: un signal réfléchi sur un
+        obstacle arrive après le trajet direct. Le \TDOA{} enregistre alors un
+        retard artificiel et surestime la distance. La mesure \RSSI{}, qui intègre
+        l'ensemble de l'énergie reçue, peut rester cohérente dans ces mêmes
+        conditions.
+  \item \textbf{\textit{Shadowing}/\textit{fading} et \RSSI{}}~: un obstacle
+        placé entre l'émetteur et le récepteur provoque une chute brutale du \RSSI{}
+        sans nécessairement affecter la mesure temporelle \TDOA{}.
+\end{itemize}
+
+Un algorithme de fusion adaptatif --- filtre de Kalman pondéré ou moindres carrés
+pondérés avec détection d'anomalies sur les résidus --- peut \textbf{ajuster
+dynamiquement les poids} accordés à chaque type de mesure~: si le \RSSI{} chute
+anormalement, l'algorithme accorde davantage de confiance au \TDOA{} à cet instant,
+et inversement.
+
+\subsubsection{Amélioration de la précision par la diversité statistique}
+
+Mathématiquement, la fusion de deux estimateurs indépendants \textbf{réduit
+l'incertitude globale}. En notant $\sigma_{\text{TDOA}}$ l'écart-type de l'erreur
+du \TDOA{} et $\sigma_{\text{RSSI}}$ celui du \RSSI{}, la fusion par moindres
+carrés pondérés produit une estimation dont l'erreur vérifie~:
+\begin{equation*}
+  \sigma_{\text{fusion}} \;<\; \min\!\bigl(\sigma_{\text{TDOA}},\; \sigma_{\text{RSSI}}\bigr)
+\end{equation*}
+
+Ce résultat, issu de la théorie de l'estimation optimale~\cite{Evennou2007},
+justifie formellement l'intérêt de la fusion~: la \textbf{diversité des informations}
+--- temporelle pour le \TDOA{}, énergétique pour le \RSSI{} --- permet de tirer
+le meilleur des deux approches de manière synergique.
+
+\begin{summarybox}{Complémentarité \TDOA{} / \RSSI{} — le principe de diversité}
+Le \TDOA{} apporte la \textbf{précision chirurgicale} (centimétrique avec \UWB{})
+lorsque la synchronisation est bonne. Le \RSSI{} apporte la \textbf{cohérence
+globale et la robustesse} sans aucune contrainte de synchronisation. En combinant
+les hyperboles du \TDOA{} et les cercles du \RSSI{}, on réduit simultanément la
+zone d'incertitude et les risques d'ambiguïté géométrique~: là où le \TDOA{} peut
+hésiter entre deux solutions voisines, le \RSSI{} vient \og{}lever l'ambiguïté\fg{}.
+\end{summarybox}
+
+\subsection{Formulation géométrique — fonction de coût unifiée}
+
+En 2D, avec $N_T$ paires de récepteurs (mesures \TDOA{}) et $N_R$ récepteurs
+individuels (mesures \RSSI{}), on cherche $\mathbf{p}^* = (x^*, y^*)$ minimisant~:
+
+\begin{keybox}
+\begin{equation}
+  \mathbf{p}^* = \underset{(x,y)}{\arg\min}\;
+  \underbrace{\sum_{(i,j)} w_{ij}\,f_{ij}(x,y)^2}_{\text{contraintes TDOA}}
+  \;+\;
+  \underbrace{\sum_{k} w_k\,g_k(x,y)^2}_{\text{contraintes RSSI}}
+  \label{eq:cout_fusion}
+\end{equation}
+\end{keybox}
+
+avec les résidus~:
+\begin{align}
+  f_{ij}(x,y) &= \sqrt{(x-x_i)^2+(y-y_i)^2} - \sqrt{(x-x_j)^2+(y-y_j)^2}
+                - \delta_{ij}
+                \label{eq:residu_tdoa}\\[4pt]
+  g_k(x,y) &= \sqrt{(x-x_k)^2+(y-y_k)^2} - \hat{d}_k
+              \label{eq:residu_rssi}
+\end{align}
+
+Les poids $w_{ij}$ et $w_k$ traduisent la \textbf{confiance} accordée à chaque
+mesure (inversement proportionnels à la variance de l'erreur).
+
+\subsection{Méthodes algorithmiques de fusion}
+
+\begin{enumerate}[label=\alph*)]
+  \item \textbf{Moindres carrés non-linéaires (NLS)}~: minimisation de
+        (\ref{eq:cout_fusion}) par Gauss-Newton ou Levenberg-Marquardt. Simple à
+        implémenter mais sensible à l'initialisation.
+
+  \item \textbf{Moindres carrés pondérés (WLS)}~: pondération inversement
+        proportionnelle à la variance de chaque mesure. Plus robuste que NLS
+        non pondéré~\cite{Kossonou2014}.
+
+  \item \textbf{Filtre de Kalman étendu (EKF)}~: fusion récurrente des mesures
+        successives pour suivre un émetteur mobile. Nécessite un modèle de
+        dynamique~\cite{Evennou2007}.
+
+  \item \textbf{Filtre particulaire (Monte Carlo)}~: représentation non
+        paramétrique de la distribution de position par un ensemble de particules
+        $\{(x_k^{(i)}, w_k^{(i)})\}$. Adapté aux environnements non gaussiens
+        (multipath, \NLOS{})~\cite{Klingbeil2008}.
+\end{enumerate}
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007} (p.~49)~:} \og{}Cette fusion d'informations
+nécessite l'exploitation d'outils comme un filtre de Kalman ou un filtre particulaire
+qui d'une part jouent sur le lissage de la trajectoire estimée, mais aussi contiennent
+la trajectoire lissée entre les murs du bâtiment.\fg{}
+\end{citebox}
+
+\begin{citebox}
+\textbf{Source~\cite{Klingbeil2008}~:} \og{}\textit{A Monte Carlo based
+localisation algorithm is implemented, which uses a person's pedometry data, indoor
+map information and seed node positions to provide accurate, real-time indoor
+location information.}\fg{}
+\end{citebox}
+
+\subsection{Pondération des mesures}
+
+L'efficacité de la fusion dépend critiquement des poids attribués~:
+
+\begin{itemize}
+  \item Pour le \RSSI{}~: la variance de l'erreur de distance dépend de $n$ et
+        du bruit. Elle peut être calibrée expérimentalement.
+  \item Pour le \TDOA{}~: l'erreur sur $\delta_{ij}$ est liée à la résolution
+        temporelle. Avec \UWB{}, la résolution sub-nanoseconde donne une erreur
+        $< 30$~cm.
+  \item En \NLOS{}~: il est crucial de détecter et pondérer à la baisse les mesures
+        issues de récepteurs en situation \NLOS{} (tests statistiques sur les résidus).
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Technologies radio utilisées}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{UWB (\textit{Ultra Wide Band})}
+
+L'\UWB{} est la technologie la plus adaptée à la mesure \TDOA{} précise en
+intérieur.
+
+\begin{summarybox}{Caractéristiques UWB}
+\begin{itemize}
+  \item Bande de fréquence~: 3,1 à 10,6~GHz (FCC) / 6 à 8,5~GHz (Europe)
+  \item Largeur de bande~: $\geq 500$~MHz $\Rightarrow$ résolution temporelle $< 2$~ns
+  \item Puissance d'émission très faible (spectre étalé)
+  \item Impulsions très courtes permettant de séparer les multi-trajets
+  \item Standard~: IEEE~802.15.4a
+\end{itemize}
+\end{summarybox}
+
+\begin{citebox}
+\textbf{Source~\cite{Kossonou2014}~:} \og{}Les transmissions Ultra-Large Bande
+(ULB) de par leur singularité en matière de précision et de faible puissance
+d'émission, s'avèrent être la meilleure réponse à la problématique [de localisation
+indoor]. [\ldots] Les résultats obtenus démontrent que l'utilisation des techniques
+de transmission basées sur la technologie radio impulsionnelle ULB permet d'obtenir
+un système de localisation en 3-D avec une précision centimétrique pour les
+applications indoor.\fg{}
+\end{citebox}
+
+Deux variantes de modulation UWB étudiées dans~\cite{Kossonou2014}~:
+\begin{itemize}
+  \item DS-CDMA (\textit{Direct Sequence — Code Division Multiple Access})
+  \item TH-CDMA (\textit{Time Hopping — Code Division Multiple Access})
+\end{itemize}
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007} (p.~47)~:} \og{}L'\UWB{} est une technologie
+émergente dont les performances en terme de localisation semblent prometteuses.
+[\ldots] Des précisions de l'ordre de quelques centimètres sont attendues de cette
+nouvelle technologie.\fg{}
+\end{citebox}
+
+\subsubsection*{Pourquoi une large bande passante améliore-t-elle la précision~?}
+
+La haute précision de l'\UWB{} s'explique par trois effets physiques directement
+liés à la largeur de sa bande passante.
+
+\paragraph{Résolution temporelle.}
+En traitement du signal, la durée minimale d'une impulsion $\Delta t$ et la largeur
+de bande $B$ sont liées par~:
+\begin{equation*}
+  \Delta t \;\approx\; \frac{1}{B}
+\end{equation*}
+Avec $B \geq 500$~MHz (\UWB{}), on obtient $\Delta t \approx 2$~ns, contre
+plusieurs dizaines de nanosecondes en WiFi classique ($B \approx 20$~MHz). Plus
+le front de montée de l'impulsion est raide, plus le récepteur peut horodater
+l'arrivée du signal avec précision.
+
+\paragraph{Résistance aux multi-trajets.}
+C'est le principal avantage de l'\UWB{} en environnement intérieur. Lorsque les
+impulsions sont très brèves~:
+\begin{itemize}
+  \item \textbf{Bande étroite}~: le signal direct et ses échos (réflexions sur
+        les murs et les meubles) se chevauchent en un signal composite
+        indiscernable — le récepteur ne peut plus isoler le trajet direct.
+  \item \textbf{Large bande (\UWB{})}~: l'impulsion directe arrive et se termine
+        \emph{avant} le premier écho. Le récepteur identifie sans ambiguïté le
+        premier trajet (le plus court, donc le trajet réel)~\cite{Kossonou2014}.
+\end{itemize}
+
+\paragraph{Précision sur l'estimation de distance.}
+Puisque $d = c \cdot t$ avec $c \approx 3 \times 10^8$~m/s, une erreur temporelle
+de \textbf{1~ns} se traduit par une erreur de position de \textbf{30~cm}.
+L'\UWB{}, avec une résolution sub-nanoseconde, atteint des précisions de 1 à 10~cm,
+là où les technologies à bande étroite restent limitées à plusieurs mètres
+d'incertitude.
+
+\subsection{WiFi (IEEE~802.11)}
+
+Le WiFi est la technologie la plus répandue pour la localisation \RSSI{} en
+intérieur, car son infrastructure est déjà déployée dans la majorité des bâtiments.
+
+Modes d'utilisation pour la localisation~:
+\begin{itemize}
+  \item \RSSI{} direct~: trilatération à partir de la puissance des balises~;
+  \item \textit{Fingerprinting}~: carte radio + recherche du plus proche voisin
+        (système RADAR de Microsoft)~;
+  \item \TDOA{} WiFi~: difficile, car les produits commerciaux ne donnent pas
+        accès aux informations temporelles fines.
+\end{itemize}
+
+\begin{citebox}
+\textbf{Source~\cite{Evennou2007} (p.~46)~:} \og{}Les informations temporelles
+utiles pour le TDOA sont indisponibles dans les produits commerciaux actuels.\fg{}
+\end{citebox}
+
+\subsection{WSN — \textit{Wireless Sensor Networks}}
+
+Les réseaux de capteurs sans fil (\WSN{}) sont des systèmes distribués de nœuds à
+faibles ressources (ZigBee, IEEE~802.15.4) déployés dans l'environnement.
+
+\begin{citebox}
+\textbf{Source~\cite{Mitilineos2010}~:} \og{}\textit{Wireless Sensor Networks
+(WSNs) are a class of distributed computing and communication systems that are an
+integral part of the physical space they inhabit. [\ldots] Localization is a key
+aspect of such networks, since the knowledge of a sensor's location is critical
+in order to process information originating from this sensor.}\fg{}
+\end{citebox}
+
+Applications démontrées sur \WSN{}~\cite{Mitilineos2010}~:
+\begin{itemize}
+  \item Projet EU \textit{EMERGE}~: localisation temps réel de personnes âgées
+        (Ambient Assisted Living)~;
+  \item Tests en environnements réels~: domicile, hôpital.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Approches algorithmiques}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Trilatération — résolution par moindres carrés}
+
+Le système linéarisé $\mathbf{A}\hat{\mathbf{p}} = \mathbf{b}$ (obtenu en
+soustrayant les équations de cercle à la première) se résout par~:
+\[
+  \hat{\mathbf{p}} = (\mathbf{A}^T \mathbf{A})^{-1} \mathbf{A}^T \mathbf{b}
+\]
+et, en présence de mesures de qualités inégales, par moindres carrés \textbf{pondérés}~:
+\[
+  \hat{\mathbf{p}} = (\mathbf{A}^T \mathbf{W} \mathbf{A})^{-1}
+                     \mathbf{A}^T \mathbf{W} \mathbf{b}
+\]
+où $\mathbf{W} = \operatorname{diag}(w_1, \ldots, w_N)$.
+
+\subsection{Localisation TDOA — méthode de Chan \& Ho}
+
+L'algorithme de Chan-Ho~(1994) résout le problème \TDOA{} en deux étapes~:
+\begin{enumerate}
+  \item Une première résolution WLS linéarisée fournit une estimation initiale~;
+  \item Une seconde itération exploite la corrélation entre les variables pour
+        affiner l'estimée.
+\end{enumerate}
+Il atteint la \textbf{borne de Cramér-Rao} (précision statistique optimale) à
+haut rapport signal sur bruit.
+
+\subsection{Propagation de contraintes}
+
+\begin{citebox}
+\textbf{Source~\cite{Bischoff2006}~:} Approche originale représentant la
+connaissance de position par un graphe d'arêtes étiquetées par des intervalles
+$[a, b]$ de distances. Un algorithme de propagation de contraintes maintient la
+cohérence du graphe et réduit les intervalles à mesure que de nouvelles mesures
+arrivent. Avantage~: représente naturellement l'incertitude sans hypothèse gaussienne.
+\end{citebox}
+
+\subsection{Filtrage particulaire (Monte Carlo)}
+
+Le filtre particulaire représente la distribution \textit{a~posteriori} de la
+position par un ensemble de $N$ particules pondérées
+$\{(\mathbf{p}_k^{(i)},\, w_k^{(i)})\}_{i=1}^{N}$~:
+
+\begin{enumerate}
+  \item \textbf{Prédiction}~: propagation des particules selon le modèle dynamique~;
+  \item \textbf{Mise à jour}~: correction des poids selon la vraisemblance des mesures
+        (\TDOA{} et \RSSI{})~;
+  \item \textbf{Rééchantillonnage}~: concentration du calcul sur les zones de forte
+        probabilité~;
+  \item \textbf{Estimation}~: $\hat{\mathbf{p}} = \sum_i w_k^{(i)}\,\mathbf{p}_k^{(i)}$.
+\end{enumerate}
+
+Il accepte naturellement des mesures hétérogènes par mise à jour multiplicative
+des poids~\cite{Klingbeil2008}.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Développement d'une plateforme de simulation interactive}
+% ══════════════════════════════════════════════════════════════════════════════
+
+Afin de mettre en pratique et d'éprouver les théories étudiées, une plateforme logicielle a été développée en langage Python. Son but est de simuler la localisation d'un émetteur en fusionnant des données \TDOA{} et \RSSI{} et de visualiser dynamiquement la résolution spatiale.
+
+\subsection{Objectifs et conception de l'outil}
+
+Le programme a été pensé comme un tableau de bord paramétrable et réactif. Il s'appuie sur la bibliothèque d'interface \texttt{Tkinter} avec une intégration directe des rendus graphiques de \texttt{Matplotlib}, tandis que la puissance de calcul sous-jacente est gérée par \texttt{NumPy} et le module d'optimisation de \texttt{SciPy}. 
+
+L'interface graphique donne à l'utilisateur un contrôle total sur l'ensemble des variables simulées~: les mesures \RSSI{} en dBm des deux capteurs, le temps d'arrivée différentiel \TDOA{} en millisecondes, ainsi que les paramètres du modèle de \textit{path loss} comme la puissance de référence au mètre ($P_0$) ou l'exposant d'atténuation du canal ($n$). Dès qu'une valeur est modifiée, le tableau de bord recalcule et redessine en temps réel la configuration géométrique~: il trace les cercles correspondant aux estimations de distance fournies par le \RSSI{}, et l'hyperbole associée au délai dicté par le \TDOA{}. \`A travers des curseurs de poids ($W_{\text{RSSI}}$ et $W_{\text{TDOA}}$), la plateforme permet d'orienter le solveur basé sur les Moindres Carrés Pondérés (WLS) pour observer les transferts de confiance en fonction des erreurs environnementales simulées.
+
+\subsection{Le problème des minimums locaux et des défauts d'intersection}
+
+Lors du développement du moteur de résolution, deux écueils algorithmiques et conceptuels majeurs ont été rencontrés et corrigés.
+
+Tout d'abord, l'algorithme d'optimisation non linéaire (Levenberg-Marquardt ou Gauss-Newton) souffrait du grand problème des \textbf{minimums locaux}. Ce type d'algorithme nécessite une estimation initiale pour \og{}descendre\fg{} la pente de l'erreur spatiale. Avec un point de départ par défaut (comme l'origine $(0,0)$), le solveur restait presque systématiquement englué sur l'axe des abscisses ($y=0$). Étant géométriquement symétrique à la ligne de base reliant les deux capteurs, la zone de convergence attirait le solveur dans un faux positif, le rendant incapable de définir de quel côté du plan cartésien se trouvait véritablement l'émetteur.
+
+Le deuxième problème relevait de la cohérence physique des données injectées. Les valeurs arbitraires initialement choisies pour tester le programme forçaient l'algorithme d'optimisation à calculer un point de compromis \og{}bâtard\fg{} entre les mesures. Visuellement, cela se traduisait par des graphiques déroutants où l'hyperbole flirtait avec les cercles d'atténuation mais ne les coupait jamais précisément au point d'estimation mathématique.
+
+\subsection{Résolution par une approche hybride et analytique}
+
+Pour éradiquer les minimums locaux et démontrer l'efficacité indéniable de la logique de fusion, une stratégie de \textbf{solveur hybride à trois phases} a été implémentée dans la plateforme~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{Résolution analytique préalable~:} Le système ne cherche plus à l'aveugle. Il utilise d'abord la géométrie pure pour résoudre le système d'égalités quadratiques entre les deux cercles \RSSI{}, remontant jusqu'à deux points d'intersection exacts possibles.
+  \item \textbf{Criblage par erreur TDOA~:} Les deux points d'intersection identifiés sont introduits dans l'équation de délai de l'hyperbole \TDOA{}. Le point dont l'erreur résiduelle (déviation) est la plus faible est immédiatement sélectionné comme \og{}graine\fg{} pour l'algorithme final.
+  \item \textbf{Ajustement aux moindres carrés~:} Levenberg-Marquardt est amorcé avec cette position initialement très proche de la vérité. Ainsi guidé par avance du bon côté de la carte, il esquive les minimums focaux et atterrit promptement sur le minimum global réel.
+\end{enumerate}
+
+Enfin, pour dissiper les défauts d'intersection esthétique rencontrés avec des paramètres hasardeux, une inversion des calculs log-distance a été effectuée. À partir d'une véritable position physique théorique (par exemple $2.0, 5.0$), des valeurs \TDOA{} et \RSSI{} incontestables ont été générées et injectées par défaut dans l'interface de démarrage. Cette \og{}vérité terrain\fg{} force l'hyperbole à fendre parfaitement le carrefour des deux cercles modélisés, prouvant indiscutablement à l'œil comme en machine que la logique de fusion spatialise parfaitement la cible.
+
+\vspace{0.5cm}
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}[scale=0.8]
+    % Axes
+    \draw[->, gray!80] (-3,0) -- (6,0) node[right] {$x$};
+    \draw[->, gray!80] (0,-1) -- (0,5) node[above] {$y$};
+    
+    % Capteurs R1, R2
+    \filldraw[iemnblue] (0,0) circle (3pt) node[below left] {$R_1 (0,0)$};
+    \filldraw[iemnblue] (4,0) circle (3pt) node[below right] {$R_2 (4,0)$};
+    
+    % Cercles RSSI
+    \draw[dashed, thick, iemnaccent] (0,0) circle (2.828); % r=sqrt(8), passe par (2,2)
+    \draw[dashed, thick, iemnaccent] (4,0) circle (2.828);
+    \node[iemnaccent] at (-1, 2.5) {Cercles RSSI};
+
+    % Hyperbole TDOA (approximation visuelle par parabole pour schéma simple)
+    \draw[thick, iemnblue] (2, 0.5) parabola (3, 4.5);
+    \draw[thick, iemnblue] (2, 0.5) parabola (1, 4.5);
+    \node[iemnblue] at (3.5, 4.5) {Hyperbole TDOA};
+
+    % Point intersection (position)
+    \filldraw[ForestGreen] (2, 2) circle (4pt) node[above right] {Position Estimée};
+  \end{tikzpicture}
+  \caption{Représentation schématique de l'intersection visuelle parfaite obtenue entre les cercles \RSSI{} et la branche d'hyperbole du \TDOA{}.}
+  \label{fig:intersection}
+\end{figure}
+\vspace{0.5cm}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Bilan et positionnement du stage}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Ce que le corpus bibliographique apporte}
+
+\begin{table}[h!]
+  \centering
+  \caption{Contribution de chaque document au sujet du stage}
+  \label{tab:corpus}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{
+    >{\bfseries}p{1cm}
+    >{\itshape}p{3.5cm}
+    X
+  }
+    \toprule
+    \rowcolor{iemnblue}
+    \textcolor{white}{Réf.} &
+    \textcolor{white}{Auteur(s)} &
+    \textcolor{white}{Apport principal pour le stage} \\
+    \midrule
+    \cite{Deak2012}
+      & Deak et al.\ (2012)
+      & État de l'art général~; classification TDOA/RSSI/TOA/AOA~;
+        critères de comparaison des systèmes \\
+    \rowcolor{iemnlightblue!40}
+    \cite{Mitilineos2010}
+      & Mitilineos et al.\ (2010)
+      & Comparaison expérimentale RSSI/ToA/DoA sur WSN réels~;
+        performances mesurées en environnement indoor \\
+    \cite{Evennou2007}
+      & Evennou (2007)
+      & Référence théorique complète~; TDOA WiFi/\UWB{}~;
+        fusion Kalman/particulaire~; modèle de propagation \RSSI{} \\
+    \rowcolor{iemnlightblue!40}
+    \cite{Xiao2016}
+      & Xiao et al.\ (2016)
+      & Survey récent \textit{device-based/-free}~;
+        tendances smartphone, CSI, fusion capteurs \\
+    \cite{Klingbeil2008}
+      & Klingbeil \& Wark (2008)
+      & Système WSN temps réel~; filtrage Monte Carlo~;
+        fusion RSSI + pédométrie + carte \\
+    \rowcolor{iemnlightblue!40}
+    \cite{Bischoff2006}
+      & Bischoff et al.\ (2006)
+      & Approche par contraintes d'intervalles~;
+        alternative non-gaussienne pour modéliser l'incertitude \\
+    \cite{Kossonou2014}
+      & Kossonou (2014)
+      & \textbf{Thèse IEMN-DOAE}~; TDOA + \UWB{}~;
+        algorithme non-itératif 3D~; précision centimétrique démontrée \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Lacune que le stage doit combler}
+
+Aucun document n'aborde directement la \textbf{fusion algorithmique TDOA+RSSI}
+dans un cadre unifié. C'est précisément l'objectif du stage~:
+
+\begin{itemize}
+  \item modéliser conjointement les hyperboles (\TDOA{}) et les cercles (\RSSI{})~;
+  \item implémenter un algorithme de fusion (NLS/WLS ou particulaire)~;
+  \item évaluer le gain de précision par rapport à chaque technique séparée.
+\end{itemize}
+
+\subsection{Outils recommandés pour l'implémentation}
+
+\begin{summarybox}{Environnements de développement suggérés}
+\textbf{Python}~: \texttt{numpy}/\texttt{scipy} (algèbre linéaire, optimisation),
+\texttt{matplotlib} (visualisation des hyperboles et cercles),
+\texttt{scipy.optimize.least\_squares} (résolution NLS / WLS).\\[4pt]
+\textbf{MATLAB}~: \textit{Optimization Toolbox} (\texttt{lsqnonlin}),
+\textit{Phased Array System Toolbox} (modèles de propagation).
+\end{summarybox}
+
+\subsection{Défis techniques à anticiper}
+
+La concrétisation du système de fusion implique de surmonter plusieurs défis
+pratiques, directement liés aux contraintes physiques des deux techniques~:
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{Modélisation du canal radio}~: choisir et calibrer le modèle de
+        propagation (modèle log-distance,
+        équation~\eqref{eq:pathloss}) pour convertir fidèlement la puissance
+        \RSSI{} en distance. L'exposant $n$ doit être estimé expérimentalement
+        dans l'environnement cible.
+
+  \item \textbf{Algorithme de fusion adaptatif}~: implémenter une méthode de
+        fusion (moindres carrés pondérés, Gauss-Newton ou filtre de Kalman)
+        dont la pondération est dynamique~: accorder plus de confiance au
+        \TDOA{} lorsque le \RSSI{} fluctue anormalement, et inversement.
+
+  \item \textbf{Gestion du bruit et des mesures aberrantes}~: détecter et
+        neutraliser les \textit{outliers} causés par des obstacles imprévus
+        (\NLOS{}) via des tests statistiques sur les résidus (test du $\chi^2$,
+        distance de Mahalanobis).
+
+  \item \textbf{Synchronisation des récepteurs \TDOA{}}~: 1~ns d'erreur
+        temporelle entraîne 30~cm d'erreur de position. La qualité du protocole
+        d'horodatage et du signal de référence conditionne directement les
+        performances du système.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section*{Récapitulatif des équations clés}
+\addcontentsline{toc}{section}{Récapitulatif des équations clés}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colback=iemnlightblue!30, colframe=iemnblue,
+  arc=5pt, left=12pt, right=12pt, top=8pt, bottom=8pt,
+  title={\textbf{Synthèse mathématique du problème de fusion TDOA + RSSI}},
+  fonttitle=\small\bfseries\color{white},
+  coltitle=white, attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=iemnblue, arc=3pt}
+]
+\textbf{TDOA — hyperbole (foyers $R_i$, $R_j$)~:}
+\[
+  \sqrt{(x-x_i)^2+(y-y_i)^2} \;-\; \sqrt{(x-x_j)^2+(y-y_j)^2} \;=\; c\,\tau_{ij}
+\]
+
+\medskip
+\textbf{RSSI — modèle de path loss~:}
+\[
+  P_r(d) = P_0 - 10\,n\log_{10}\!\left(\tfrac{d}{d_0}\right)
+  \quad\Longrightarrow\quad
+  \hat{d} = d_0 \cdot 10^{\frac{P_0 - P_r}{10n}}
+\]
+
+\medskip
+\textbf{RSSI — cercle (centre $R_k$, rayon $\hat{d}_k$)~:}
+\[
+  (x-x_k)^2 \;+\; (y-y_k)^2 \;=\; \hat{d}_k^{\,2}
+\]
+
+\medskip
+\textbf{Fusion — fonction de coût unifiée (moindres carrés pondérés)~:}
+\[
+  \mathbf{p}^* = \underset{(x,y)}{\arg\min}\;
+  \sum_{(i,j)} w_{ij}
+  \Bigl[\,
+    \|\mathbf{p}-R_i\| - \|\mathbf{p}-R_j\| - c\,\tau_{ij}
+  \,\Bigr]^2
+  +
+  \sum_{k} w_k
+  \Bigl[\,
+    \|\mathbf{p}-R_k\| - \hat{d}_k
+  \,\Bigr]^2
+\]
+\end{tcolorbox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\newpage
+\section{Comptes-rendus d'expériences — Mesures en conditions réelles}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Contexte et environnement expérimental}
+
+Les expériences ont été conduites dans la salle de travaux pratiques de robotique
+industrielle de l'IEMN (Université de Valenciennes), un environnement intérieur
+fortement chargé sur le plan électromagnétique.
+
+L'espace de mesure est peuplé de plusieurs robots industriels \textbf{Stäubli à 6
+axes}, de lignes de convoyeurs motorisés, de contrôleurs d'automates et
+d'alimentations à découpage. Cet environnement constitue un cas d'usage difficile
+et représentatif pour évaluer la robustesse du système \UWB{} face aux perturbations
+électromagnétiques.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.35 (1).jpeg}
+        \caption{Vue générale de la salle}
+        \label{fig:salle-generale}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.35 (2).jpeg}
+        \caption{Opérateur au poste de mesure}
+        \label{fig:salle-operateur}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.35 (3).jpeg}
+        \caption{Vue depuis l'angle opposé}
+        \label{fig:salle-angle}
+    \end{subfigure}
+    \caption{Environnement expérimental~: salle de robotique industrielle de l'IEMN}
+    \label{fig:salle}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Mise en place du repère cartésien}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Avant le démarrage des mesures, un repère cartésien 2D a été matérialisé avec
+précision sur le sol de la salle. La procédure mise en œuvre est la suivante~:
+
+\begin{enumerate}[label=\textbf{Étape \arabic*.}]
+
+  \item \textbf{Tracé de l'axe $x$ (abscisse) par laser.}
+        Un niveau laser croisé auto-nivelant \textbf{DeWalt DW088K} a été utilisé
+        pour projeter une ligne horizontale parfaitement droite sur le sol,
+        correspondant à la direction de la \textit{baseline} (axe $x$, soit la
+        direction $R_1 \to R_2$). Ce laser garantit un alignement précis des
+        récepteurs \UWB{} et élimine toute erreur angulaire dans le repère.
+
+  \item \textbf{Délimitation des deux axes par scotch bleu de balisage.}
+        Du scotch bleu de chantier a été appliqué sur le sol le long de chaque
+        axe, constituant un repère cartésien orthogonal visible et permanent
+        durant toutes les séances. L'axe $y$ (ordonnée) a été tracé
+        perpendiculairement à l'axe $x$ grâce au second faisceau laser croisé
+        du DeWalt DW088K, garantissant l'orthogonalité du repère.
+
+  \item \textbf{Balisage métrique tous les 1~m.}
+        Des repères ont été posés au scotch bleu tous les mètres sur chaque axe,
+        permettant de connaître exactement la position de l'émetteur (tag) par
+        rapport aux récepteurs (ancres) à chaque point de mesure.
+\end{enumerate}
+
+Cette procédure permet ainsi de connaître avec précision les coordonnées
+$(x, y)$ de l'émetteur dans le repère cartésien défini par les deux récepteurs,
+ce qui est indispensable pour valider quantitativement la localisation estimée.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.33.jpeg}
+        \caption{Laser DeWalt DW088K sur le sol}
+        \label{fig:laser-sol}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.33 (1).jpeg}
+        \caption{Modèle DeWalt DW088K utilisé}
+        \label{fig:laser-boite}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.33 (2).jpeg}
+        \caption{Scotch bleu et marquages au sol}
+        \label{fig:repere-sol}
+    \end{subfigure}
+    \caption{Mise en place du repère cartésien~: laser (axe~$x$) et scotch bleu (axes $x$, $y$)}
+    \label{fig:repere}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Dispositif expérimental — récepteurs \UWB{}}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Les récepteurs \UWB{} (ancres) sont des modules \textbf{ESP32-\UWB{}} fixés aux
+coins d'une plateforme carrée en carton, maintenus par du scotch bleu. Cette
+configuration positionne 3 ou 4 capteurs dans un plan horizontal, permettant la
+trilatération 2D. Chaque capteur est relié par câble USB à l'ordinateur
+principal pour l'alimentation et la communication série.
+
+L'émetteur (tag \UWB{}) est positionné successivement aux différentes coordonnées
+connues du repère cartésien défini à l'étape précédente, à des distances
+croissantes selon les axes $x$ et $y$.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.34 (2).jpeg}
+        \caption{Plateforme ESP32-\UWB{} — vue de dessus}
+        \label{fig:esp32-dessus}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.34 (3).jpeg}
+        \caption{Plateforme ESP32-\UWB{} — vue de profil}
+        \label{fig:esp32-profil}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.34.jpeg}
+        \caption{Dispositif dans son environnement (vue~1)}
+        \label{fig:dispositif-env1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.34 (1).jpeg}
+        \caption{Dispositif dans son environnement (vue~2)}
+        \label{fig:dispositif-env2}
+    \end{subfigure}
+    \caption{Dispositif expérimental~: modules ESP32-\UWB{} fixés aux coins d'une plateforme carton}
+    \label{fig:dispositif}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Déroulement des mesures et résultats}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Les mesures ont été conduites à différentes positions de l'émetteur le long des
+axes, à distances croissantes des récepteurs.
+
+\subsubsection{Données collectées}
+
+Pour chaque position de l'émetteur, le système ESP32 relève les \textbf{ToF
+(Temps de Vol)} sur les 4 canaux \UWB{} disponibles~: canal~1 (3494~MHz),
+canal~2 (3994~MHz), canal~3 (4494~MHz), canal~5 (6489~MHz). Pour chaque canal,
+les distances estimées de chaque capteur sont calculées, puis une position 2D est
+estimée par trilatération. Une \textbf{position finale moyenne} est ensuite
+calculée sur l'ensemble des canaux pour réduire l'incertitude.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{tof/WhatsApp Image 2026-03-31 at 21.10.35.jpeg}
+    \caption{Capture du terminal~: données ToF en temps réel sur les 4 canaux \UWB{},
+             position estimée par canal et position finale moyennée}
+    \label{fig:terminal-tof}
+\end{figure}
+
+\subsubsection{Effet de la distance sur la qualité du canal \UWB{}}
+
+Un constat majeur a été établi au cours de ces expériences~:
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=iemnlightblue!30, colframe=iemnblue,
+  arc=4pt, left=10pt, right=10pt, top=6pt, bottom=6pt
+]
+\textit{«~Plus l'émetteur est éloigné des récepteurs, plus le canal \UWB{} est
+stable et la mesure \textrm{ToF} est fiable.~»}
+\end{tcolorbox}
+
+\medskip
+À \textbf{courte distance}, le canal est perturbé par des effets de champ proche
+et les multi-trajets par réflexion prédominent (\NLOS{} immédiat). À
+\textbf{grande distance}, le premier trajet direct devient dominant et les mesures
+ToF convergent vers une valeur stable~: la distance «~affine le canal~» en
+éliminant progressivement l'effet des réflexions parasites immédiates.
+
+\subsubsection{Condition de validité de la localisation}
+
+L'alerte ci-dessous a été systématiquement observée lors des mesures à courte
+distance~:
+
+\begin{center}
+\texttt{[ALERTE] Distance radiale (XXX mm) < min distance mesurée (XXX mm) !}
+\end{center}
+
+Cette alerte signale une \textbf{incohérence géométrique}~: la distance radiale de
+la position estimée est inférieure à la plus petite distance mesurée par les
+capteurs, ce qui est physiquement impossible (la position estimée se retrouve
+à l'intérieur du polygone formé par les récepteurs). La règle de validité
+établie est donc~:
+
+\[
+  \boxed{\;d_{\text{radiale}}(\hat{\mathbf{p}}) \;>\; \min_k\, d_k\;}
+\]
+
+Si cette condition n'est pas respectée, la mesure doit être rejetée ou
+interprétée avec précaution.
+
+\subsubsection{Effets des perturbations électromagnétiques}
+
+L'environnement industriel de la salle (robots Stäubli, convoyeurs, alimentations
+à découpage) génère des perturbations \textbf{électromagnétiques} significatives.
+Les effets observés sont~:
+
+\begin{itemize}
+  \item augmentation de la \textbf{variance} des mesures ToF~;
+  \item apparition de \textbf{valeurs aberrantes} (\textit{outliers}) sur certains
+        canaux~;
+  \item dégradation plus marquée à \textbf{courte distance} (effet \NLOS{} amplifié
+        par les perturbations EM)~;
+  \item à grande distance, la perturbation relative diminue et le signal \UWB{}
+        reste détectable en trajet direct, conformément à l'observation précédente.
+\end{itemize}
+
+Les données collectées dans \texttt{donnees\_mesures.xlsx} permettent de visualiser
+ces effets canal par canal et position par position.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Synthèse des observations expérimentales}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{summarybox}{Observations clés — Expérience \UWB{} IEMN, 31 mars 2026}
+\begin{enumerate}[label=\textbf{\arabic*.}, itemsep=4pt]
+  \item \textbf{Repère cartésien précis.} Mise en place via laser DeWalt DW088K
+        (axe~$x$) et scotch bleu (axe~$y$), balisage métrique tous les 1~m~;
+        connaissance exacte de la position de l'émetteur par rapport aux récepteurs.
+
+  \item \textbf{La distance améliore la qualité du canal \UWB{}.}
+        Plus l'émetteur est loin, plus le ToF est stable et la localisation précise.
+
+  \item \textbf{Condition de validité~:}
+        $d_{\text{radiale}}(\hat{\mathbf{p}}) > \min_k d_k$~;
+        si non respectée~: position hors zone valide (alerte système).
+
+  \item \textbf{Perturbations EM industrielles visibles} mais compensables par
+        augmentation du nombre de mesures moyennées et utilisation préférentielle
+        du canal~5 (6489~MHz), plus résistant grâce à sa largeur de bande.
+
+  \item \textbf{Données collectées} sur plusieurs positions et distances~;
+        visualisation des effets dans \texttt{donnees\_mesures.xlsx}.
+\end{enumerate}
+\end{summarybox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+%  BIBLIOGRAPHIE
+% ══════════════════════════════════════════════════════════════════════════════
+\newpage
+\begin{thebibliography}{99}
+
+\bibitem{Deak2012}
+G.~Deak, K.~Curran et J.~Condell,
+\textit{A survey of active and passive indoor localisation systems},
+\textit{Computer Communications}, vol.~35, p.~1939--1954, Elsevier, 2012.
+\doi{10.1016/j.comcom.2012.06.004}
+\newline\textbf{Annotation~:} Survey de référence sur les systèmes de localisation actifs et passifs. Classe les systèmes selon la technologie (RSSI, TOA, TDOA, AOA), la précision, la scalabilité et le coût. À lire en premier pour comprendre le panorama général.
+
+\bibitem{Mitilineos2010}
+S.~A.~Mitilineos, D.~M.~Kyriazanos, O.~E.~Segou, J.~N.~Goufas et S.~C.~A.~Thomopoulos,
+\textit{Indoor Localization with Wireless Sensor Networks},
+\textit{Progress In Electromagnetics Research}, vol.~109, p.~441--474, 2010.
+\newline\textbf{Annotation~:} Étude expérimentale comparant RSSI, ToA et DoA sur des plateformes WSN réelles, dans le cadre du projet EU EMERGE (services médicaux AAL). Utile pour comprendre les performances mesurées en environnement réel.
+
+\bibitem{Evennou2007}
+F.~Evennou,
+\textit{Techniques et technologies de localisation avancées pour terminaux mobiles dans les environnements indoor},
+Thèse de doctorat, Université Joseph Fourier -- Grenoble~I / France Télécom R\&D,
+janvier 2007. HAL~: \texttt{tel-00136064}.
+\newline\textbf{Annotation~:} Thèse fondatrice et très complète (209~p.) sur la localisation indoor. Couvre WiFi RSSI, TDOA WiFi, UWB, navigation inertielle, filtre de Kalman, filtre particulaire et fusion de données. État de l'art exhaustif. Document de référence indispensable pour ce stage.
+
+\bibitem{Xiao2016}
+J.~Xiao, Z.~Zhou, Y.~Yi et L.~M.~Ni,
+\textit{A Survey on Wireless Indoor Localization from the Device Perspective},
+\textit{ACM Computing Surveys}, vol.~49, n\textsuperscript{o}~2, article~25,
+juin~2016.
+\doi{10.1145/2933232}
+\newline\textbf{Annotation~:} Survey récent et exhaustif distinguant localisation \textit{device-based} et \textit{device-free}. Met en avant les smartphones comme plateforme de fusion et le CSI comme alternative plus riche que le RSSI. Utile pour les tendances de recherche actuelles.
+
+\bibitem{Klingbeil2008}
+L.~Klingbeil et T.~Wark,
+\textit{A Wireless Sensor Network for Real-Time Indoor Localisation and Motion Monitoring},
+\textit{Proc.\ 7\textsuperscript{th} Int.\ Conf.\ on Information Processing in Sensor Networks (IPSN~2008)},
+IEEE, p.~39--50, 2008.
+\doi{10.1109/IPSN.2008.15}
+\newline\textbf{Annotation~:} Démontre un système complet de localisation temps réel basé sur WSN, filtrage Monte Carlo, pédométrie et carte du bâtiment. Illustre l'approche de fusion de données hétérogènes.
+
+\bibitem{Bischoff2006}
+U.~Bischoff, M.~Strohbach, M.~Hazas et G.~Kortuem,
+\textit{Constraint-Based Distance Estimation in Ad-Hoc Wireless Sensor Networks},
+\textit{Proc.\ EWSN~2006}, Springer LNCS~3868, p.~54--68, 2006.
+\newline\textbf{Annotation~:} Approche originale par graphe de contraintes de distances (intervalles $[a,b]$) et propagation de contraintes. Traite naturellement l'incertitude de mesure sans hypothèse gaussienne.
+
+\bibitem{Kossonou2014}
+K.~I.~Kossonou,
+\textit{Étude d'un système de localisation 3-D haute précision basé sur les techniques de transmission Ultra Large Bande à basse consommation d'énergie pour les objets mobiles communicants},
+Thèse de doctorat (n\textsuperscript{o}~14/13),
+Université de Valenciennes et du Hainaut-Cambrésis / Université Félix Houphouët-Boigny d'Abidjan,
+soutenue le~27~mai~2014. Laboratoire IEMN-DOAE.
+\newline\textbf{Annotation~:} Thèse réalisée au même laboratoire que ce stage (IEMN-DOAE). Développe un système complet de localisation 3D par TDOA avec signaux UWB (DS-CDMA et TH-CDMA), avec algorithme non-itératif optimisé. Précision centimétrique démontrée en laboratoire. Référence directe et essentielle.
+
+\end{thebibliography}
+
+\end{document}
