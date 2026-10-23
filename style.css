@@ -75,8 +75,19 @@ body {
   text-decoration: none; letter-spacing: -1px;
 }
 .nav-links {
-  display: flex; gap: 2rem; list-style: none;
+  display: flex; gap: 2rem; list-style: none; margin-left: auto;
 }
+
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-left: 1.75rem; padding: 0.35rem 0.85rem;
+  background: transparent; color: var(--accent);
+  border: 1px solid var(--border-hover); border-radius: 999px;
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.lang-switch:hover { background: var(--accent); color: var(--bg); }
 .nav-links a {
   color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
   font-weight: 500; letter-spacing: 0.3px;
@@ -615,6 +626,7 @@ footer {
   }
   .nav-links.open { display: flex; }
   .nav-toggle { display: flex; }
+  .lang-switch { margin-left: auto; margin-right: 1rem; }
   #navbar { position: fixed; }
 
   section { padding: 70px 0; }

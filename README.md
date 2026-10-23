@@ -63,7 +63,17 @@ Placez votre CV au format PDF dans ce dossier sous le nom :
 ```
 CV_Yannis_MONDUC.pdf
 ```
-Il sera téléchargeable via le bouton du portfolio.
+Il sera téléchargeable via le bouton du portfolio.  
+CV actuellement en ligne : **CV Ingénieur Systèmes Embarqués & FPGA** (copié depuis le dossier `CV/`).
+
+---
+
+## 🌐 Version anglaise (FR / EN)
+
+Le bouton **🌐 EN / FR** dans la barre de navigation bascule toute la page en anglais (textes, titre de l'onglet, effet machine à écrire). Le choix est mémorisé dans le navigateur.
+
+- Lien direct vers la version anglaise : `https://yaya97139.github.io/?lang=en`
+- Les traductions anglaises sont dans `script.js` (objet `I18N_EN`). Chaque texte traduisible du HTML porte un attribut `data-i18n="clé"` : si vous modifiez un texte français dans `index.html`, mettez aussi à jour la clé correspondante dans `I18N_EN`.
 
 ---
 
